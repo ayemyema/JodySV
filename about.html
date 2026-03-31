@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jody SV Event Styling and Catering Services</title>
+    <link rel="stylesheet" href="aboutstyle.css">
+    <script src="https://kit.fontawesome.com/4b4ade4766.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  
+    <nav class="navbar">
+        <div class="head">
+            <h1>Jody SV</h1>
+        </div>
+
+        <div class="hamburger">&#9776;</div>
+
+        <div class="navlink">
+            <a href="Main">Home</a>
+            <a href="contact.html">Contact</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
+
+    <div class="bgpic">
+        <img src="logopic.jpg" alt="Background Image">
+    </div>
+    <div class="about-me-section">
+    <div class="about-me-container">
+        <div class="about-me-image">
+            <img src="profile.jpg" alt="About Me Image">
+        </div>
+        <div class="about-me-content">
+            <h2>About Me</h2>
+            <p>Hello! I'm Jody SV, a professional event stylist and caterer dedicated to creating memorable experiences. I specialize in transforming any space into a beautiful setting tailored to your vision. With years of experience in styling, event coordination, and catering, I bring creativity, elegance, and attention to detail to every project.</p>
+            <p>Whether it's an intimate gathering or a grand celebration, I work closely with clients to ensure every detail is perfect. My goal is to turn your moments into unforgettable memories.</p>
+        </div>
+    </div>
+</div>
+
+   
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navlink = document.querySelector('.navlink');
+
+        hamburger.addEventListener('click', () => {
+            navlink.classList.toggle('active');
+        });
+    </script>
+
+</body>
+</html>

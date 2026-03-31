@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jody SV Event Styling and Catering Services</title>
+    <link rel="stylesheet" href="contactstyle.css">
+    <script src="https://kit.fontawesome.com/4b4ade4766.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  
+    <nav class="navbar">
+        <div class="head">
+            <h1>Jody SV</h1>
+        </div>
+
+        <div class="hamburger">&#9776;</div>
+
+        <div class="navlink">
+            <a href="Main">Home</a>
+            <a href="contact.html">Contact</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
+
+    <div class="bgpic">
+        <img src="logopic.jpg" alt="Background Image">
+    </div>
+</div>
+<div class="contact-section">
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2>Contact Us</h2>
+            <p><strong>Company:</strong> Jody SV Event Styling & Catering</p>
+            <p><strong>Address:</strong>#108/109 Osmeña Street, Camiling, Tarlac</p>
+            <p><strong>Phone:</strong> +63 945 648 0450</p>
+            <p><strong>Email:</strong>jodysamortinvergara261155@gmail.com</p>
+        </div>
+
+        <div class="contact-map">
+            <!-- Google Maps Embed -->
+           <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d960.3021502420811!2d120.409975!3d15.687076!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396b31496b5dad3%3A0xa3b99c1bbca696ca!2sJody%E2%80%99s%20Catering%20Services(SV)!5e0!3m2!1sen!2sph!4v1774962169273!5m2!1sen!2sph" 
+                width="100%" 
+                height="350" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+</div>
+
+   
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navlink = document.querySelector('.navlink');
+
+        hamburger.addEventListener('click', () => {
+            navlink.classList.toggle('active');
+        });
+    </script>
+
+</body>
+</html>
