@@ -1,0 +1,112 @@
+.navbar {
+    background-color: rgb(0, 162, 255);
+    width: auto;
+    height: 100px;
+    color: aliceblue;
+    align-items: center;
+}
+.head {
+    padding: 10px;
+    justify-content: center;
+}
+.navlink a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+.navlink a:hover {
+    background-color: rgba(112, 207, 255, 0.621);
+    border-radius: 5px;
+}
+.navlink {
+    display: flex;
+   justify-content: flex-end; 
+   margin-top: -55px;
+   gap: 80px;
+   padding: 20px;
+}
+.hamburger {
+    display: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+    .navlink {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: white;
+        width: 100%;
+        text-align: center;
+        padding:20px 0;
+    }
+    .navlink.active {
+        display: flex;
+    }
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.button1 {
+    display: flex;
+    gap: 10px;
+}
+.book {
+    border-radius: 20px;
+    width: 150px;
+    height: 50px;
+    border-color: rgb(0, 140, 255);
+    background-color: rgba(100, 201, 255, 0.439);
+    font-size:large;
+}
+.view {
+    border-radius: 20px;
+    width: 150px;
+    height: 50px;
+    border-color: rgb(0, 140, 255);
+    background-color: rgba(100, 201, 255, 0.439);
+    font-size:large;
+}
+.section {
+    background-color: rgba(0, 162, 255, 0.38);
+    width:auto;
+    height:80px;
+    margin-top: 5%;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    align-content: center;
+}
+.section h3 {
+    font-size: xx-large;
+    display: flex;
+    align-self: center
+    font-style:;
+    color: rgb(0, 0, 0);
+}
+.service {
+    background-color: rgba(113, 196, 255, 0.487);
+    width: 300px;
+    height;: auto
+}
+
+.erm img {
+    width: 200px;
+    display: flex;
+    align-items: flex-end;
+    border-radius: 10px;
+    padding: 20px;
+}
+.ha img {
+     width: 200px;
+    display: flex;
+    align-items: flex-end;
+    border-radius: 10px;
+
+}
