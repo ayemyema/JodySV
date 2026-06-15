@@ -54,6 +54,14 @@
     position: fixed;
     z-index: -1;
 }
+.content {
+    
+    padding-top: 150px;
+    color: rgb(0, 0, 0);
+    font-family: Georgia, serif;
+}
+
+
 @media (max-width: 768px) {
     .hamburger {
         display: block;
@@ -79,67 +87,60 @@
         padding: 12px 0;
         font-size: 1.5rem;
     }
+
+.gallery-section h3 {
+    font-size: xx-large;
+
 }
 
-.contact-section {
-    width: 100%;
-    padding: 50px 20px;
-    background-color: rgba(0, 162, 255, 0.05);
-    display: flex;
-    justify-content: center;
-    margin-top: 0;
-    padding-top: 170px;
+@media (max-width: 600px) {
+    .gallery-item img {
+        height: 150px;
+    }
 }
-
-.contact-container {
+}
+.gallery-section {
     max-width: 1000px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.contact-info {
+    margin: 50px auto;
     text-align: center;
+    padding: 20px;
+
+    /* Push gallery below fixed navbar */
+    padding-top: 140px;
 }
 
-.contact-info h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+.gallery-section h3 {
+
+    font-size: xx-large;
+    margin-bottom: 30px;
     color: rgb(0, 0, 0);
-}
-
-.contact-info p {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    line-height: 1.5;
-    color: rgb(0, 0, 0);
-}
-
-.contact-map iframe {
+    background-color:  rgba(113, 196, 255, 0.3);
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
     border-radius: 15px;
-    width: 100%;
-    height: 350px;
 }
 
-@media (min-width: 768px) {
-    .contact-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 50px;
-        margin-top: 80px;
-    }
-    .contact-info p {
-        font-size: clamp(14px, 2vw, 18px);
-        line-height: 2.5;
-    }
-    .contact-info {
-        flex: 1 1 40%;
-        text-align: left
-    }
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.gallery-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
 
-    .contact-map {
-        flex: 1 1 60%;
+@media (max-width: 600px) {
+    .gallery-item img {
+        height: 150px;
     }
 }
