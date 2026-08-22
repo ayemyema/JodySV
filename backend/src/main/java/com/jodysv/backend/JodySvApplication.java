@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class JodySvApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JodySvApplication.class, args);
+        SpringApplication.run(
+                JodySvApplication.class,
+                args
+        );
     }
 }

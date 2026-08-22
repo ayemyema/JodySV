@@ -1,14 +1,11 @@
-const API_URL = "http://localhost:8080";
-
+const API_URL = "https://redesigned-goggles-7v7jj6p4prw3jgg.github.dev";
 
 // =========================
 // ELEMENTS
 // =========================
 
 const uploadForm = document.getElementById("uploadForm");
-
 const imageInput = document.getElementById("image");
-
 const categoryInput = document.getElementById("category");
 
 const previewContainer =
@@ -60,7 +57,6 @@ imageInput.addEventListener("change", () => {
         );
 
         imageInput.value = "";
-
         previewContainer.style.display = "none";
 
         return;
@@ -74,12 +70,10 @@ imageInput.addEventListener("change", () => {
         );
 
         imageInput.value = "";
-
         previewContainer.style.display = "none";
 
         return;
     }
-
 
     const imageURL =
         URL.createObjectURL(file);
@@ -93,20 +87,21 @@ imageInput.addEventListener("change", () => {
 
 
 // =========================
-// UPLOAD
+// UPLOAD IMAGE
 // =========================
 
 uploadForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-
-    const file = imageInput.files[0];
+    const file =
+        imageInput.files[0];
 
     const category =
         categoryInput.value;
 
 
+    // Check image
     if (!file) {
 
         showMessage(
@@ -118,13 +113,29 @@ uploadForm.addEventListener("submit", async (event) => {
     }
 
 
-    const formData = new FormData();
+    // Check category
+    if (!category) {
 
-    formData.append("image", file);
+        showMessage(
+            "Please select a category.",
+            "error"
+        );
 
-    formData.append("category", category);
+        return;
+    }
 
 
+    // Create FormData
+    const formData =
+        new FormData();
+
+    formData.append(
+        "image",
+        file
+    );
+
+
+    // Disable button
     uploadButton.disabled = true;
 
     uploadButton.textContent =
@@ -135,9 +146,19 @@ uploadForm.addEventListener("submit", async (event) => {
 
     try {
 
+        const uploadURL =
+            `${API_URL}/api/images/upload?category=${encodeURIComponent(category)}`;
+
+
+        console.log(
+            "Uploading to:",
+            uploadURL
+        );
+
+
         const response =
             await fetch(
-                `${API_URL}/api/images/upload?category=${encodeURIComponent(category)}`,
+                uploadURL,
                 {
                     method: "POST",
                     body: formData
@@ -145,47 +166,86 @@ uploadForm.addEventListener("submit", async (event) => {
             );
 
 
-        const result =
-            await response.json();
+        const responseText =
+            await response.text();
 
 
+        console.log(
+            "Server response:",
+            responseText
+        );
+
+
+        let result = {};
+
+        try {
+
+            result =
+                JSON.parse(responseText);
+
+        } catch {
+
+            result = {
+                message: responseText
+            };
+        }
+
+
+        // Check response
         if (!response.ok) {
 
             throw new Error(
                 result.message ||
-                "Upload failed."
+                `Upload failed. Server returned ${response.status}.`
             );
         }
 
 
+        // Success
         showMessage(
             "Picture uploaded successfully!",
             "success"
         );
 
 
+        console.log(
+            "Uploaded filename:",
+            result.filename
+        );
+
+
+        // Reset form
         uploadForm.reset();
 
+
+        // Hide preview
         previewContainer.style.display =
             "none";
 
 
+        // Refresh gallery
         loadImages();
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "UPLOAD ERROR:",
+            error
+        );
+
 
         showMessage(
             error.message ||
-            "Could not connect to the Java server.",
+            "Failed to fetch. Make sure the Java backend is running.",
             "error"
         );
 
+
     } finally {
 
-        uploadButton.disabled = false;
+        uploadButton.disabled =
+            false;
 
         uploadButton.textContent =
             "Upload Picture";
@@ -217,39 +277,78 @@ async function loadImages() {
 
     try {
 
+        const url =
+            `${API_URL}/api/images?category=${encodeURIComponent(category)}`;
+
+
+        console.log(
+            "Loading images from:",
+            url
+        );
+
+
         const response =
             await fetch(
-                `${API_URL}/api/images?category=${encodeURIComponent(category)}`
+                url,
+                {
+                    method: "GET"
+                }
             );
 
 
-        const result =
-            await response.json();
+        const responseText =
+            await response.text();
+
+
+        console.log(
+            "Gallery response:",
+            responseText
+        );
+
+
+        let result = {};
+
+        try {
+
+            result =
+                JSON.parse(responseText);
+
+        } catch {
+
+            result = {
+                message: responseText
+            };
+        }
 
 
         if (!response.ok) {
 
             throw new Error(
                 result.message ||
-                "Could not load images."
+                `Server returned ${response.status}.`
             );
         }
 
 
         displayImages(
-            result.images,
+            result.images || [],
             category
         );
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "LOAD IMAGES ERROR:",
+            error
+        );
+
 
         gallery.innerHTML = `
             <p class="empty">
-                Could not connect to the Java backend.
-                Make sure Spring Boot is running on port 8080.
+                Could not load pictures.
+                <br>
+                ${error.message}
             </p>
         `;
     }
@@ -260,12 +359,18 @@ async function loadImages() {
 // DISPLAY IMAGES
 // =========================
 
-function displayImages(images, category) {
+function displayImages(
+    images,
+    category
+) {
 
     gallery.innerHTML = "";
 
 
-    if (!images || images.length === 0) {
+    if (
+        !images ||
+        images.length === 0
+    ) {
 
         gallery.innerHTML = `
             <p class="empty">
@@ -277,69 +382,102 @@ function displayImages(images, category) {
     }
 
 
-    images.forEach(filename => {
+    images.forEach(
+        filename => {
 
-        const card =
-            document.createElement("div");
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-        card.className =
-            "image-card";
-
-
-        const img =
-            document.createElement("img");
-
-        img.src =
-            `${API_URL}/uploads/${encodeURIComponent(category)}/${encodeURIComponent(filename)}`;
-
-        img.alt =
-            "Uploaded event picture";
+            card.className =
+                "image-card";
 
 
-        const info =
-            document.createElement("div");
-
-        info.className =
-            "image-info";
-
-
-        const name =
-            document.createElement("div");
-
-        name.className =
-            "image-name";
-
-        name.textContent =
-            filename;
+            const img =
+                document.createElement(
+                    "img"
+                );
 
 
-        const deleteButton =
-            document.createElement("button");
-
-        deleteButton.className =
-            "delete-button";
-
-        deleteButton.textContent =
-            "Delete";
+            img.src =
+                `${API_URL}/uploads/${encodeURIComponent(category)}/${encodeURIComponent(filename)}`;
 
 
-        deleteButton.addEventListener(
-            "click",
-            () => deleteImage(category, filename)
-        );
+            img.alt =
+                "Uploaded event picture";
 
 
-        info.appendChild(name);
+            // If image cannot load
+            img.onerror = () => {
 
-        info.appendChild(deleteButton);
+                console.error(
+                    "Could not load image:",
+                    img.src
+                );
 
-        card.appendChild(img);
+                img.alt =
+                    "Image could not be loaded";
+            };
 
-        card.appendChild(info);
 
-        gallery.appendChild(card);
+            const info =
+                document.createElement(
+                    "div"
+                );
 
-    });
+            info.className =
+                "image-info";
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "image-name";
+
+            name.textContent =
+                filename;
+
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.className =
+                "delete-button";
+
+            deleteButton.textContent =
+                "Delete";
+
+
+            deleteButton.addEventListener(
+                "click",
+                () => {
+                    deleteImage(
+                        category,
+                        filename
+                    );
+                }
+            );
+
+
+            info.appendChild(name);
+
+            info.appendChild(
+                deleteButton
+            );
+
+            card.appendChild(img);
+
+            card.appendChild(info);
+
+            gallery.appendChild(card);
+        }
+    );
 }
 
 
@@ -347,7 +485,10 @@ function displayImages(images, category) {
 // DELETE IMAGE
 // =========================
 
-async function deleteImage(category, filename) {
+async function deleteImage(
+    category,
+    filename
+) {
 
     const confirmed =
         confirm(
@@ -362,17 +503,36 @@ async function deleteImage(category, filename) {
 
     try {
 
+        const url =
+            `${API_URL}/api/images?category=${encodeURIComponent(category)}&filename=${encodeURIComponent(filename)}`;
+
+
         const response =
             await fetch(
-                `${API_URL}/api/images?category=${encodeURIComponent(category)}&filename=${encodeURIComponent(filename)}`,
+                url,
                 {
                     method: "DELETE"
                 }
             );
 
 
-        const result =
-            await response.json();
+        const responseText =
+            await response.text();
+
+
+        let result = {};
+
+        try {
+
+            result =
+                JSON.parse(responseText);
+
+        } catch {
+
+            result = {
+                message: responseText
+            };
+        }
 
 
         if (!response.ok) {
@@ -395,7 +555,11 @@ async function deleteImage(category, filename) {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "DELETE ERROR:",
+            error
+        );
+
 
         showMessage(
             error.message ||
@@ -417,7 +581,6 @@ categoryInput.addEventListener(
         clearMessage();
 
         loadImages();
-
     }
 );
 
@@ -428,7 +591,10 @@ categoryInput.addEventListener(
 
 refreshButton.addEventListener(
     "click",
-    loadImages
+    () => {
+
+        loadImages();
+    }
 );
 
 
@@ -436,19 +602,26 @@ refreshButton.addEventListener(
 // MESSAGE
 // =========================
 
-function showMessage(text, type) {
+function showMessage(
+    text,
+    type
+) {
 
-    message.textContent = text;
+    message.textContent =
+        text;
 
-    message.className = type;
+    message.className =
+        type;
 }
 
 
 function clearMessage() {
 
-    message.textContent = "";
+    message.textContent =
+        "";
 
-    message.className = "";
+    message.className =
+        "";
 }
 
 
@@ -458,7 +631,13 @@ function clearMessage() {
 
 function capitalize(text) {
 
-    return text.charAt(0).toUpperCase()
+    if (!text) {
+        return "";
+    }
+
+    return text
+        .charAt(0)
+        .toUpperCase()
         + text.slice(1);
 }
 

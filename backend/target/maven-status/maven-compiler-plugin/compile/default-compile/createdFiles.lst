@@ -1,3 +1,4 @@
-com/jodysv/backend/JodySvApplication.class
 com/jodysv/backend/service/ImageService.class
+com/jodysv/backend/config/WebConfig.class
+com/jodysv/backend/JodySvApplication.class
 com/jodysv/backend/controller/ImageController.class

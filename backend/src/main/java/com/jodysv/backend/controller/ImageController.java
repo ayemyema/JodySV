@@ -1,6 +1,7 @@
 package com.jodysv.backend.controller;
 
 import com.jodysv.backend.service.ImageService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/images")
+
 public class ImageController {
 
     private final ImageService imageService;
@@ -18,6 +20,11 @@ public class ImageController {
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
     }
+
+
+    // ==========================================
+    // UPLOAD
+    // ==========================================
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadImage(
@@ -27,18 +34,28 @@ public class ImageController {
         try {
 
             String filename =
-                    imageService.saveImage(image, category);
+                    imageService.saveImage(
+                            image,
+                            category
+                    );
 
             String url =
-                    "/uploads/" + category + "/" + filename;
+                    "/uploads/"
+                    + category
+                    + "/"
+                    + filename;
 
             return ResponseEntity.ok(
                     Map.of(
                             "success", true,
-                            "message", "Image uploaded successfully.",
-                            "filename", filename,
-                            "category", category,
-                            "url", url
+                            "message",
+                            "Image uploaded successfully.",
+                            "filename",
+                            filename,
+                            "category",
+                            category,
+                            "url",
+                            url
                     )
             );
 
@@ -46,30 +63,44 @@ public class ImageController {
 
             return ResponseEntity
                     .badRequest()
-                    .body(Map.of(
-                            "success", false,
-                            "message", e.getMessage()
-                    ));
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message",
+                                    e.getMessage()
+                            )
+                    );
 
         } catch (IOException e) {
 
             return ResponseEntity
                     .internalServerError()
-                    .body(Map.of(
-                            "success", false,
-                            "message", "Could not save the image."
-                    ));
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message",
+                                    "Could not save the image."
+                            )
+                    );
         }
     }
 
+
+    // ==========================================
+    // GET IMAGES
+    // ==========================================
+
     @GetMapping
     public ResponseEntity<?> getImages(
-            @RequestParam(defaultValue = "other") String category) {
+            @RequestParam(defaultValue = "other")
+            String category) {
 
         try {
 
             List<String> images =
-                    imageService.getImages(category);
+                    imageService.getImages(
+                            category
+                    );
 
             return ResponseEntity.ok(
                     Map.of(
@@ -83,21 +114,32 @@ public class ImageController {
 
             return ResponseEntity
                     .badRequest()
-                    .body(Map.of(
-                            "success", false,
-                            "message", e.getMessage()
-                    ));
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message",
+                                    e.getMessage()
+                            )
+                    );
 
         } catch (IOException e) {
 
             return ResponseEntity
                     .internalServerError()
-                    .body(Map.of(
-                            "success", false,
-                            "message", "Could not load images."
-                    ));
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message",
+                                    "Could not load images."
+                            )
+                    );
         }
     }
+
+
+    // ==========================================
+    // DELETE
+    // ==========================================
 
     @DeleteMapping
     public ResponseEntity<?> deleteImage(
@@ -106,12 +148,16 @@ public class ImageController {
 
         try {
 
-            imageService.deleteImage(category, filename);
+            imageService.deleteImage(
+                    category,
+                    filename
+            );
 
             return ResponseEntity.ok(
                     Map.of(
                             "success", true,
-                            "message", "Image deleted successfully."
+                            "message",
+                            "Image deleted successfully."
                     )
             );
 
@@ -119,19 +165,25 @@ public class ImageController {
 
             return ResponseEntity
                     .badRequest()
-                    .body(Map.of(
-                            "success", false,
-                            "message", e.getMessage()
-                    ));
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message",
+                                    e.getMessage()
+                            )
+                    );
 
         } catch (IOException e) {
 
             return ResponseEntity
                     .internalServerError()
-                    .body(Map.of(
-                            "success", false,
-                            "message", "Could not delete the image."
-                    ));
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message",
+                                    "Could not delete the image."
+                            )
+                    );
         }
     }
 }
