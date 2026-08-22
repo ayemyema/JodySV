@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jody SV Event Styling and Catering Services</title>
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="icon" href="images/logo/logopic.jpg" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4b4ade4766.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  
+    <nav class="navbar">
+        <div class="head">
+            <h1><a href="index.html">Jody SV</a></h1>
+        </div>
+
+        <div class="hamburger">&#9776;</div>
+
+        <div class="navlink">
+            <a href="index.html">Home</a>
+            <a href="contact.html">Contact</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
+
+
+    <div class="bgpic">
+        <img src="images/logo/logopic.jpg" alt="Background Image">
+    </div>
+
+
+    <div class="content">
+        <h2>Turning Moments Into Beautiful Memories</h2>
+        <h4>From intimate gatherings to grand celebrations, we bring your vision to life with creativity and style.</h4>
+        <h4>Affordable elegance in catering, styling, and event coordination.</h4>
+
+       <div class="button1">
+        <div>
+            <a href="book.html" class="book">Book Now</a>
+        </div>
+        <div>
+            <a href="viewp.html" class="viewp">Packages</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Our Services</h3>
+    </div>
+
+    <div class="service">
+        <ul>
+            <li><a href="wedding.html">Wedding</a></li>
+            <li><a href="birthday.html">Birthday/Christening Parties</a></li>
+            <li>Christmas Party</li>
+            <li>Photoshoot/Booth Design</li>
+            <li>Etc.</li>
+        </ul>
+    </div>
+   
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navlink = document.querySelector('.navlink');
+
+        hamburger.addEventListener('click', () => {
+            navlink.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

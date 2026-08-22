@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jody SV - Admin</title>
+
+    <link rel="stylesheet" href="css/adminstyle.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="head">
+            <h1><a href="index.html">Jody SV</a></h1>
+        </div>
+
+        <div class="navlink">
+            <a href="index.html">Website</a>
+        </div>
+    </nav>
+
+
+    <main class="admin-container">
+
+        <h2>Jody SV Admin</h2>
+        <p class="subtitle">Upload and manage event pictures</p>
+
+
+        <!-- Upload Section -->
+        <section class="upload-card">
+
+            <h3>Upload Picture</h3>
+
+            <form id="uploadForm">
+
+                <div class="form-group">
+                    <label for="category">Picture Category</label>
+
+                    <select id="category" required>
+                        <option value="wedding">Wedding</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="christening">Christening</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="image">
+                        Choose Picture
+                    </label>
+
+                    <input
+                        type="file"
+                        id="image"
+                        accept="image/jpeg,image/png,image/webp"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Image Preview -->
+                <div id="previewContainer" class="preview-container">
+
+                    <p>Image Preview</p>
+
+                    <img
+                        id="preview"
+                        src=""
+                        alt="Image Preview"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="uploadButton"
+                >
+                    Upload Picture
+                </button>
+
+            </form>
+
+
+            <!-- Status Message -->
+            <div id="message"></div>
+
+        </section>
+
+
+        <!-- Gallery Section -->
+        <section class="gallery-section">
+
+            <div class="gallery-header">
+
+                <div>
+                    <h3>Uploaded Pictures</h3>
+                    <p id="galleryCategory">
+                        Wedding
+                    </p>
+                </div>
+
+                <button id="refreshButton">
+                    Refresh
+                </button>
+
+            </div>
+
+
+            <div id="gallery" class="gallery">
+
+                <p class="loading">
+                    Loading pictures...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/admin.js"></script>
+
+</body>
+</html>
