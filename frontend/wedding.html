@@ -1,23 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Jody SV Event Styling and Catering Services</title>
 
-    <title>
-        Jody SV Event Styling and Catering Services
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="css/wedding.css"
-    >
+    <link rel="stylesheet" href="css/wedding.css">
 
     <link
         rel="icon"
@@ -27,322 +16,275 @@
 
     <script
         src="https://kit.fontawesome.com/4b4ade4766.js"
-        crossorigin="anonymous"
-    ></script>
-
+        crossorigin="anonymous">
+    </script>
 </head>
-
 
 <body>
 
+<nav class="navbar">
 
-    <!-- =========================
-         NAVIGATION
-    ========================== -->
-
-    <nav class="navbar">
-
-        <div class="head">
-
-            <h1>
-                <a href="index.html">
-                    Jody SV
-                </a>
-            </h1>
-
-        </div>
-
-
-        <div class="hamburger">
-            &#9776;
-        </div>
-
-
-        <div class="navlink">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="contact.html">
-                Contact
-            </a>
-
-            <a href="about.html">
-                About
-            </a>
-
-        </div>
-
-    </nav>
-
-
-
-    <!-- =========================
-         HEADER IMAGE
-    ========================== -->
-
-    <div class="bgpic">
-
-        <img
-            src="images/logo/logopic.jpg"
-            alt="Jody SV Event Styling"
-        >
-
+    <div class="head">
+        <h1>
+            <a href="index.html">Jody SV</a>
+        </h1>
     </div>
 
+    <div class="hamburger">&#9776;</div>
+
+    <div class="navlink">
+        <a href="index.html">Home</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+    </div>
+
+</nav>
 
 
-    <!-- =========================
-         WEDDING GALLERY
-    ========================== -->
+<div class="bgpic">
 
-    <div class="gallery-section">
+    <img
+        src="images/logo/logopic.jpg"
+        alt="Background Image"
+    >
 
-        <h3>
-            Wedding Events
-        </h3>
+</div>
+
+
+<div class="gallery-section">
+
+    <h3>Wedding Events</h3>
+
+    <div
+        class="gallery"
+        id="weddingGallery"
+    >
+
+        <!-- =========================
+             OLD WEDDING PHOTOS
+             KEEP THESE
+        ========================== -->
+
+        <div class="gallery-item">
+            <img src="images/wedding/img 1.jpg" alt="Wedding Event 1">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/img 2.jpg" alt="Wedding Event 2">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/img 3.jpg" alt="Wedding Event 3">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp1.jpg" alt="Wedding Event 4">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/img 5.jpg" alt="Wedding Event 5">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp2.jpg" alt="Wedding Event 6">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp3.jpg" alt="Wedding Event 7">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/img 8.jpg" alt="Wedding Event 8">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp7.jpg" alt="Wedding Event 9">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp6.jpg" alt="Wedding Event 10">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp4.jpg" alt="Wedding Event 11">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp5.jpg" alt="Wedding Event 12">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp8.jpg" alt="Wedding Event 13">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp9.jpeg" alt="Wedding Event 14">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp10.jpeg" alt="Wedding Event 15">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp11.jpeg" alt="Wedding Event 16">
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/wedding/wp12.jpeg" alt="Wedding Event 17">
+        </div>
 
 
         <!--
-            Existing wedding pictures will
-            also be loaded from the backend.
-
-            The gallery starts empty and
-            JavaScript fills it automatically.
+            NEW ADMIN-UPLOADED WEDDING
+            PHOTOS WILL BE ADDED HERE
+            AUTOMATICALLY
         -->
-
-        <div
-            class="gallery"
-            id="weddingGallery"
-        >
-
-            <p class="gallery-loading">
-                Loading wedding pictures...
-            </p>
-
-        </div>
 
     </div>
 
+</div>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
+<script>
 
-    <script>
+    // =========================
+    // MOBILE MENU
+    // =========================
 
+    const hamburger =
+        document.querySelector(".hamburger");
 
-        // =====================================
-        // MOBILE NAVIGATION
-        // =====================================
+    const navlink =
+        document.querySelector(".navlink");
 
-        const hamburger =
-            document.querySelector(
-                '.hamburger'
-            );
-
-
-        const navlink =
-            document.querySelector(
-                '.navlink'
-            );
+    hamburger.addEventListener(
+        "click",
+        () => {
+            navlink.classList.toggle("active");
+        }
+    );
 
 
-        hamburger.addEventListener(
-            'click',
-            () => {
+    // =========================
+    // RENDER BACKEND
+    // =========================
 
-                navlink.classList.toggle(
-                    'active'
-                );
-
-            }
-        );
+    const API_URL =
+        "https://jodysv.onrender.com";
 
 
+    // =========================
+    // LOAD NEW WEDDING PHOTOS
+    // =========================
 
-        // =====================================
-        // BACKEND URL
-        // =====================================
-
-        const API_URL =
-            "https://jodysv.onrender.com";
-
-
-
-        // =====================================
-        // GALLERY
-        // =====================================
+    async function loadUploadedWeddingPictures() {
 
         const gallery =
             document.getElementById(
                 "weddingGallery"
             );
 
+        try {
 
-
-        // =====================================
-        // LOAD WEDDING PICTURES
-        // =====================================
-
-        async function loadWeddingPictures() {
-
-            try {
-
-                console.log(
-                    "Loading wedding pictures..."
+            const response =
+                await fetch(
+                    `${API_URL}/api/images?category=wedding`
                 );
 
-
-                const response =
-                    await fetch(
-                        `${API_URL}/api/images?category=wedding`
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        `Server returned ${response.status}`
-                    );
-
-                }
-
-
-                const data =
-                    await response.json();
-
-
-                console.log(
-                    "Wedding pictures:",
-                    data
+            if (!response.ok) {
+                throw new Error(
+                    `Server returned ${response.status}`
                 );
-
-
-                // Clear loading message
-
-                gallery.innerHTML = "";
-
-
-                // =================================
-                // NO PICTURES
-                // =================================
-
-                if (
-                    !data.images ||
-                    data.images.length === 0
-                ) {
-
-                    gallery.innerHTML = `
-                        <p class="gallery-empty">
-                            No wedding pictures uploaded yet.
-                        </p>
-                    `;
-
-                    return;
-
-                }
-
-
-
-                // =================================
-                // CREATE PICTURES
-                // =================================
-
-                data.images.forEach(
-                    filename => {
-
-
-                        const galleryItem =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        galleryItem.className =
-                            "gallery-item";
-
-
-                        const image =
-                            document.createElement(
-                                "img"
-                            );
-
-
-                        image.src =
-                            `${API_URL}/uploads/wedding/${encodeURIComponent(filename)}`;
-
-
-                        image.alt =
-                            "Jody SV Wedding Event";
-
-
-                        image.loading =
-                            "lazy";
-
-
-                        // If image fails to load
-
-                        image.onerror =
-                            () => {
-
-                                console.error(
-                                    "Could not load:",
-                                    image.src
-                                );
-
-                                galleryItem.remove();
-
-                            };
-
-
-                        galleryItem.appendChild(
-                            image
-                        );
-
-
-                        gallery.appendChild(
-                            galleryItem
-                        );
-
-                    }
-                );
-
-
-            } catch (error) {
-
-
-                console.error(
-                    "WEDDING GALLERY ERROR:",
-                    error
-                );
-
-
-                gallery.innerHTML = `
-                    <p class="gallery-error">
-                        Unable to load wedding pictures.
-                        Please try again later.
-                    </p>
-                `;
-
             }
+
+            const data =
+                await response.json();
+
+            console.log(
+                "Uploaded wedding pictures:",
+                data.images
+            );
+
+
+            if (
+                !data.images ||
+                data.images.length === 0
+            ) {
+                return;
+            }
+
+
+            // Add each uploaded picture
+            data.images.forEach(
+                filename => {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+                    item.className =
+                        "gallery-item";
+
+
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    image.src =
+                        `${API_URL}/uploads/wedding/${encodeURIComponent(filename)}`;
+
+
+                    image.alt =
+                        "New Wedding Event";
+
+
+                    image.loading =
+                        "lazy";
+
+
+                    image.onerror =
+                        () => {
+
+                            console.error(
+                                "Could not load image:",
+                                image.src
+                            );
+
+                            item.remove();
+
+                        };
+
+
+                    item.appendChild(
+                        image
+                    );
+
+                    gallery.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Could not load uploaded wedding pictures:",
+                error
+            );
 
         }
 
+    }
 
 
-        // =====================================
-        // START
-        // =====================================
+    // Load new pictures
+    loadUploadedWeddingPictures();
 
-        loadWeddingPictures();
-
-
-    </script>
-
+</script>
 
 </body>
-
 </html>

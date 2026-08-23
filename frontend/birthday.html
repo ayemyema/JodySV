@@ -27,8 +27,8 @@
 
     <script
         src="https://kit.fontawesome.com/4b4ade4766.js"
-        crossorigin="anonymous"
-    ></script>
+        crossorigin="anonymous">
+    </script>
 
 </head>
 
@@ -36,420 +36,344 @@
 <body>
 
 
-    <!-- =========================
-         NAVIGATION
-    ========================== -->
+<nav class="navbar">
 
-    <nav class="navbar">
+    <div class="head">
 
-        <div class="head">
-
-            <h1>
-                <a href="index.html">
-                    Jody SV
-                </a>
-            </h1>
-
-        </div>
-
-
-        <div class="hamburger">
-            &#9776;
-        </div>
-
-
-        <div class="navlink">
-
+        <h1>
             <a href="index.html">
-                Home
+                Jody SV
             </a>
-
-            <a href="contact.html">
-                Contact
-            </a>
-
-            <a href="about.html">
-                About
-            </a>
-
-        </div>
-
-    </nav>
-
-
-
-    <!-- =========================
-         HEADER
-    ========================== -->
-
-    <div class="bgpic">
-
-        <img
-            src="images/logo/logopic.jpg"
-            alt="Background Image"
-        >
+        </h1>
 
     </div>
 
 
-
-    <!-- =========================
-         BIRTHDAY GALLERY
-    ========================== -->
-
-    <div class="gallery-section">
-
-        <h3>
-            Birthday Events
-        </h3>
-
-
-        <div
-            class="gallery"
-            id="birthdayGallery"
-        >
-
-
-            <!--
-                These are your EXISTING
-                website pictures.
-            -->
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp1.jpg"
-                    alt="Birthday Event 1"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp2.jpg"
-                    alt="Birthday Event 2"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp3.jpg"
-                    alt="Birthday Event 3"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp4.jpg"
-                    alt="Birthday Event 4"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp5.jpg"
-                    alt="Birthday Event 5"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp6.jpg"
-                    alt="Birthday Event 6"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp7.jpg"
-                    alt="Birthday Event 7"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp8.jpg"
-                    alt="Birthday Event 8"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp9.jpg"
-                    alt="Birthday Event 9"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp10.jpg"
-                    alt="Birthday Event 10"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp11.jpg"
-                    alt="Birthday Event 11"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp12.jpg"
-                    alt="Birthday Event 12"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp13.jpeg"
-                    alt="Birthday Event 13"
-                >
-
-            </div>
-
-
-            <div class="gallery-item">
-
-                <img
-                    src="images/birthday/bp14.jpeg"
-                    alt="Birthday Event 14"
-                >
-
-            </div>
-
-
-            <!--
-                NEW ADMIN-UPLOADED IMAGES
-                WILL BE INSERTED HERE
-                AUTOMATICALLY.
-            -->
-
-        </div>
-
+    <div class="hamburger">
+        &#9776;
     </div>
 
 
+    <div class="navlink">
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
+        <a href="index.html">
+            Home
+        </a>
 
-    <script>
+        <a href="contact.html">
+            Contact
+        </a>
 
+        <a href="about.html">
+            About
+        </a>
 
-        // =====================================
-        // MOBILE MENU
-        // =====================================
+    </div>
 
-        const hamburger =
-            document.querySelector(
-                '.hamburger'
-            );
-
-
-        const navlink =
-            document.querySelector(
-                '.navlink'
-            );
+</nav>
 
 
-        hamburger.addEventListener(
-            'click',
-            () => {
+<div class="bgpic">
 
-                navlink.classList.toggle(
-                    'active'
-                );
+    <img
+        src="images/logo/logopic.jpg"
+        alt="Background Image"
+    >
 
-            }
+</div>
+
+
+<div class="gallery-section">
+
+    <h3>
+        Birthday Events
+    </h3>
+
+
+    <div
+        class="gallery"
+        id="birthdayGallery"
+    >
+
+
+        <!-- =========================
+             OLD BIRTHDAY PHOTOS
+        ========================== -->
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp1.jpg"
+                alt="Birthday Event 1"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp2.jpg"
+                alt="Birthday Event 2"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp3.jpg"
+                alt="Birthday Event 3"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp4.jpg"
+                alt="Birthday Event 4"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp5.jpg"
+                alt="Birthday Event 5"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp6.jpg"
+                alt="Birthday Event 6"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp7.jpg"
+                alt="Birthday Event 7"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp8.jpg"
+                alt="Birthday Event 8"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp9.jpg"
+                alt="Birthday Event 9"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp10.jpg"
+                alt="Birthday Event 10"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp11.jpg"
+                alt="Birthday Event 11"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp12.jpg"
+                alt="Birthday Event 12"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp13.jpeg"
+                alt="Birthday Event 13"
+            >
+        </div>
+
+        <div class="gallery-item">
+            <img
+                src="images/birthday/bp14.jpeg"
+                alt="Birthday Event 14"
+            >
+        </div>
+
+
+        <!--
+            NEW ADMIN-UPLOADED
+            BIRTHDAY PHOTOS
+            WILL BE ADDED HERE
+        -->
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+    // =========================
+    // MOBILE MENU
+    // =========================
+
+    const hamburger =
+        document.querySelector(
+            ".hamburger"
+        );
+
+    const navlink =
+        document.querySelector(
+            ".navlink"
         );
 
 
+    hamburger.addEventListener(
+        "click",
+        () => {
 
-        // =====================================
-        // RENDER BACKEND
-        // =====================================
+            navlink.classList.toggle(
+                "active"
+            );
 
-        const API_URL =
-            "https://jodysv.onrender.com";
+        }
+    );
 
 
+    // =========================
+    // RENDER BACKEND
+    // =========================
 
-        // =====================================
-        // LOAD BIRTHDAY UPLOADS
-        // =====================================
+    const API_URL =
+        "https://jodysv.onrender.com";
 
-        async function loadBirthdayPictures() {
 
-            try {
+    // =========================
+    // LOAD BIRTHDAY UPLOADS
+    // =========================
 
-                console.log(
-                    "Loading birthday pictures..."
+    async function loadUploadedBirthdayPictures() {
+
+        const gallery =
+            document.getElementById(
+                "birthdayGallery"
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/api/images?category=birthday`
                 );
 
 
-                const response =
-                    await fetch(
-                        `${API_URL}/api/images?category=birthday`
-                    );
+            if (!response.ok) {
 
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        `Server returned ${response.status}`
-                    );
-
-                }
-
-
-                const data =
-                    await response.json();
-
-
-                console.log(
-                    "Birthday pictures:",
-                    data
-                );
-
-
-                if (
-                    !data.images ||
-                    data.images.length === 0
-                ) {
-
-                    return;
-
-                }
-
-
-                // =================================
-                // ADD NEW UPLOADED PICTURES
-                // =================================
-
-                data.images.forEach(
-                    filename => {
-
-
-                        const galleryItem =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        galleryItem.className =
-                            "gallery-item";
-
-
-                        const image =
-                            document.createElement(
-                                "img"
-                            );
-
-
-                        image.src =
-                            `${API_URL}/uploads/birthday/${encodeURIComponent(filename)}`;
-
-
-                        image.alt =
-                            "Birthday Event";
-
-
-                        image.loading =
-                            "lazy";
-
-
-                        image.onerror =
-                            () => {
-
-                                console.error(
-                                    "Could not load:",
-                                    image.src
-                                );
-
-                                galleryItem.remove();
-
-                            };
-
-
-                        galleryItem.appendChild(
-                            image
-                        );
-
-
-                        document
-                            .getElementById(
-                                "birthdayGallery"
-                            )
-                            .appendChild(
-                                galleryItem
-                            );
-
-                    }
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "BIRTHDAY GALLERY ERROR:",
-                    error
+                throw new Error(
+                    `Server returned ${response.status}`
                 );
 
             }
 
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "Uploaded birthday pictures:",
+                data.images
+            );
+
+
+            if (
+                !data.images ||
+                data.images.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            // Add uploaded images
+
+            data.images.forEach(
+                filename => {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "gallery-item";
+
+
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    image.src =
+                        `${API_URL}/uploads/birthday/${encodeURIComponent(filename)}`;
+
+
+                    image.alt =
+                        "New Birthday Event";
+
+
+                    image.loading =
+                        "lazy";
+
+
+                    image.onerror =
+                        () => {
+
+                            console.error(
+                                "Could not load image:",
+                                image.src
+                            );
+
+                            item.remove();
+
+                        };
+
+
+                    item.appendChild(
+                        image
+                    );
+
+
+                    gallery.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Could not load uploaded birthday pictures:",
+                error
+            );
+
         }
 
+    }
 
 
-        // =====================================
-        // START
-        // =====================================
-
-        loadBirthdayPictures();
+    // Start loading
+    loadUploadedBirthdayPictures();
 
 
-    </script>
+</script>
 
 
 </body>
-
 </html>
