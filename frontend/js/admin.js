@@ -1,4 +1,4 @@
-const API_URL = "https://redesigned-goggles-7v7jj6p4prw3jgg.github.dev";
+const API_URL = "https://redesigned-goggles-7v7jj6p4prw3jgg-8080.app.github.dev";
 
 // =========================
 // ELEMENTS
@@ -8,26 +8,29 @@ const uploadForm = document.getElementById("uploadForm");
 const imageInput = document.getElementById("image");
 const categoryInput = document.getElementById("category");
 
-const previewContainer =
-    document.getElementById("previewContainer");
+const previewContainer = document.getElementById("previewContainer");
+const preview = document.getElementById("preview");
 
-const preview =
-    document.getElementById("preview");
+const uploadButton = document.getElementById("uploadButton");
+const message = document.getElementById("message");
 
-const uploadButton =
-    document.getElementById("uploadButton");
+const gallery = document.getElementById("gallery");
+const galleryCategory = document.getElementById("galleryCategory");
+const refreshButton = document.getElementById("refreshButton");
 
-const message =
-    document.getElementById("message");
 
-const gallery =
-    document.getElementById("gallery");
+// =========================
+// SETTINGS
+// =========================
 
-const galleryCategory =
-    document.getElementById("galleryCategory");
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-const refreshButton =
-    document.getElementById("refreshButton");
+// Target upload size.
+// Keeping this below 2 MB gives the Codespaces proxy plenty of room.
+const TARGET_SIZE = 1.5 * 1024 * 1024;
+
+const MAX_WIDTH = 2400;
+const MAX_HEIGHT = 2400;
 
 
 // =========================
@@ -62,7 +65,7 @@ imageInput.addEventListener("change", () => {
         return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > MAX_FILE_SIZE) {
 
         showMessage(
             "The image is too large. Maximum size is 10 MB.",
@@ -75,8 +78,7 @@ imageInput.addEventListener("change", () => {
         return;
     }
 
-    const imageURL =
-        URL.createObjectURL(file);
+    const imageURL = URL.createObjectURL(file);
 
     preview.src = imageURL;
 
@@ -87,6 +89,198 @@ imageInput.addEventListener("change", () => {
 
 
 // =========================
+// COMPRESS IMAGE
+// =========================
+
+async function compressImage(file) {
+
+    // Small images don't need compression.
+    if (file.size <= TARGET_SIZE) {
+        return file;
+    }
+
+    showMessage(
+        "Compressing image before upload...",
+        "success"
+    );
+
+    const image = new Image();
+
+    const imageURL = URL.createObjectURL(file);
+
+    try {
+
+        await new Promise((resolve, reject) => {
+
+            image.onload = resolve;
+            image.onerror = reject;
+
+            image.src = imageURL;
+        });
+
+        let width = image.naturalWidth;
+        let height = image.naturalHeight;
+
+        // Resize if necessary.
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+
+            const scale =
+                Math.min(
+                    MAX_WIDTH / width,
+                    MAX_HEIGHT / height
+                );
+
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+        }
+
+        const canvas =
+            document.createElement("canvas");
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const context =
+            canvas.getContext("2d");
+
+        context.drawImage(
+            image,
+            0,
+            0,
+            width,
+            height
+        );
+
+        // Start with good JPEG quality.
+        let quality = 0.85;
+
+        let blob =
+            await canvasToBlob(
+                canvas,
+                quality
+            );
+
+        // Reduce quality until the file is small enough.
+        while (
+            blob.size > TARGET_SIZE &&
+            quality > 0.35
+        ) {
+
+            quality -= 0.05;
+
+            blob =
+                await canvasToBlob(
+                    canvas,
+                    quality
+                );
+        }
+
+        // If compression somehow didn't help,
+        // return the original file.
+        if (blob.size >= file.size) {
+            return file;
+        }
+
+        const compressedFile =
+            new File(
+                [blob],
+                getCompressedFilename(file.name),
+                {
+                    type: "image/jpeg",
+                    lastModified: Date.now()
+                }
+            );
+
+        console.log(
+            "Original size:",
+            formatFileSize(file.size)
+        );
+
+        console.log(
+            "Compressed size:",
+            formatFileSize(compressedFile.size)
+        );
+
+        return compressedFile;
+
+    } finally {
+
+        URL.revokeObjectURL(imageURL);
+    }
+}
+
+
+// =========================
+// CANVAS TO BLOB
+// =========================
+
+function canvasToBlob(canvas, quality) {
+
+    return new Promise((resolve, reject) => {
+
+        canvas.toBlob(
+            blob => {
+
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(
+                        new Error(
+                            "Could not compress image."
+                        )
+                    );
+                }
+
+            },
+            "image/jpeg",
+            quality
+        );
+    });
+}
+
+
+// =========================
+// COMPRESSED FILENAME
+// =========================
+
+function getCompressedFilename(filename) {
+
+    const lastDot =
+        filename.lastIndexOf(".");
+
+    if (lastDot === -1) {
+        return `${filename}.jpg`;
+    }
+
+    return (
+        filename.substring(0, lastDot) +
+        ".jpg"
+    );
+}
+
+
+// =========================
+// FORMAT FILE SIZE
+// =========================
+
+function formatFileSize(bytes) {
+
+    if (bytes < 1024 * 1024) {
+
+        return (
+            (bytes / 1024).toFixed(0) +
+            " KB"
+        );
+    }
+
+    return (
+        (bytes / (1024 * 1024)).toFixed(2) +
+        " MB"
+    );
+}
+
+
+// =========================
 // UPLOAD IMAGE
 // =========================
 
@@ -94,15 +288,13 @@ uploadForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    const file =
+    const originalFile =
         imageInput.files[0];
 
     const category =
         categoryInput.value;
 
-
-    // Check image
-    if (!file) {
+    if (!originalFile) {
 
         showMessage(
             "Please choose an image.",
@@ -112,8 +304,6 @@ uploadForm.addEventListener("submit", async (event) => {
         return;
     }
 
-
-    // Check category
     if (!category) {
 
         showMessage(
@@ -124,37 +314,44 @@ uploadForm.addEventListener("submit", async (event) => {
         return;
     }
 
-
-    // Create FormData
-    const formData =
-        new FormData();
-
-    formData.append(
-        "image",
-        file
-    );
-
-
-    // Disable button
     uploadButton.disabled = true;
 
     uploadButton.textContent =
-        "Uploading...";
+        "Preparing image...";
 
     clearMessage();
 
-
     try {
+
+        // Compress before sending.
+        const file =
+            await compressImage(
+                originalFile
+            );
+
+        console.log(
+            "Final upload size:",
+            formatFileSize(file.size)
+        );
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "image",
+            file
+        );
+
+        uploadButton.textContent =
+            "Uploading...";
 
         const uploadURL =
             `${API_URL}/api/images/upload?category=${encodeURIComponent(category)}`;
-
 
         console.log(
             "Uploading to:",
             uploadURL
         );
-
 
         const response =
             await fetch(
@@ -165,16 +362,13 @@ uploadForm.addEventListener("submit", async (event) => {
                 }
             );
 
-
         const responseText =
             await response.text();
-
 
         console.log(
             "Server response:",
             responseText
         );
-
 
         let result = {};
 
@@ -190,8 +384,6 @@ uploadForm.addEventListener("submit", async (event) => {
             };
         }
 
-
-        // Check response
         if (!response.ok) {
 
             throw new Error(
@@ -200,32 +392,22 @@ uploadForm.addEventListener("submit", async (event) => {
             );
         }
 
-
-        // Success
         showMessage(
             "Picture uploaded successfully!",
             "success"
         );
-
 
         console.log(
             "Uploaded filename:",
             result.filename
         );
 
-
-        // Reset form
         uploadForm.reset();
 
-
-        // Hide preview
         previewContainer.style.display =
             "none";
 
-
-        // Refresh gallery
         loadImages();
-
 
     } catch (error) {
 
@@ -234,13 +416,11 @@ uploadForm.addEventListener("submit", async (event) => {
             error
         );
 
-
         showMessage(
             error.message ||
-            "Failed to fetch. Make sure the Java backend is running.",
+            "Failed to upload the picture.",
             "error"
         );
-
 
     } finally {
 
@@ -250,7 +430,6 @@ uploadForm.addEventListener("submit", async (event) => {
         uploadButton.textContent =
             "Upload Picture";
     }
-
 });
 
 
@@ -263,10 +442,8 @@ async function loadImages() {
     const category =
         categoryInput.value;
 
-
     galleryCategory.textContent =
         capitalize(category);
-
 
     gallery.innerHTML = `
         <p class="loading">
@@ -274,18 +451,15 @@ async function loadImages() {
         </p>
     `;
 
-
     try {
 
         const url =
             `${API_URL}/api/images?category=${encodeURIComponent(category)}`;
 
-
         console.log(
             "Loading images from:",
             url
         );
-
 
         const response =
             await fetch(
@@ -295,16 +469,13 @@ async function loadImages() {
                 }
             );
 
-
         const responseText =
             await response.text();
-
 
         console.log(
             "Gallery response:",
             responseText
         );
-
 
         let result = {};
 
@@ -320,7 +491,6 @@ async function loadImages() {
             };
         }
 
-
         if (!response.ok) {
 
             throw new Error(
@@ -329,12 +499,10 @@ async function loadImages() {
             );
         }
 
-
         displayImages(
             result.images || [],
             category
         );
-
 
     } catch (error) {
 
@@ -342,7 +510,6 @@ async function loadImages() {
             "LOAD IMAGES ERROR:",
             error
         );
-
 
         gallery.innerHTML = `
             <p class="empty">
@@ -366,7 +533,6 @@ function displayImages(
 
     gallery.innerHTML = "";
 
-
     if (
         !images ||
         images.length === 0
@@ -381,7 +547,6 @@ function displayImages(
         return;
     }
 
-
     images.forEach(
         filename => {
 
@@ -393,22 +558,17 @@ function displayImages(
             card.className =
                 "image-card";
 
-
             const img =
                 document.createElement(
                     "img"
                 );
 
-
             img.src =
                 `${API_URL}/uploads/${encodeURIComponent(category)}/${encodeURIComponent(filename)}`;
-
 
             img.alt =
                 "Uploaded event picture";
 
-
-            // If image cannot load
             img.onerror = () => {
 
                 console.error(
@@ -420,7 +580,6 @@ function displayImages(
                     "Image could not be loaded";
             };
 
-
             const info =
                 document.createElement(
                     "div"
@@ -428,7 +587,6 @@ function displayImages(
 
             info.className =
                 "image-info";
-
 
             const name =
                 document.createElement(
@@ -441,7 +599,6 @@ function displayImages(
             name.textContent =
                 filename;
 
-
             const deleteButton =
                 document.createElement(
                     "button"
@@ -453,17 +610,16 @@ function displayImages(
             deleteButton.textContent =
                 "Delete";
 
-
             deleteButton.addEventListener(
                 "click",
                 () => {
+
                     deleteImage(
                         category,
                         filename
                     );
                 }
             );
-
 
             info.appendChild(name);
 
@@ -495,17 +651,14 @@ async function deleteImage(
             "Are you sure you want to delete this picture?"
         );
 
-
     if (!confirmed) {
         return;
     }
-
 
     try {
 
         const url =
             `${API_URL}/api/images?category=${encodeURIComponent(category)}&filename=${encodeURIComponent(filename)}`;
-
 
         const response =
             await fetch(
@@ -515,10 +668,8 @@ async function deleteImage(
                 }
             );
 
-
         const responseText =
             await response.text();
-
 
         let result = {};
 
@@ -534,7 +685,6 @@ async function deleteImage(
             };
         }
 
-
         if (!response.ok) {
 
             throw new Error(
@@ -543,15 +693,12 @@ async function deleteImage(
             );
         }
 
-
         showMessage(
             "Picture deleted successfully.",
             "success"
         );
 
-
         loadImages();
-
 
     } catch (error) {
 
@@ -559,7 +706,6 @@ async function deleteImage(
             "DELETE ERROR:",
             error
         );
-
 
         showMessage(
             error.message ||
@@ -635,10 +781,10 @@ function capitalize(text) {
         return "";
     }
 
-    return text
-        .charAt(0)
-        .toUpperCase()
-        + text.slice(1);
+    return (
+        text.charAt(0).toUpperCase() +
+        text.slice(1)
+    );
 }
 
 
