@@ -1,4 +1,4 @@
-const API_URL = "https://redesigned-goggles-7v7jj6p4prw3jgg-8080.app.github.dev";
+const API_URL = "https://jodysv.onrender.com/";
 
 // =========================
 // ELEMENTS
