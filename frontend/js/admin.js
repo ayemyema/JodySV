@@ -1,4 +1,4 @@
-const API_URL = "https://jodysv.onrender.com/";
+const API_URL = "https://jodysv.onrender.com";
 
 // =========================
 // ELEMENTS
