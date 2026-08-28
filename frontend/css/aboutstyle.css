@@ -1,79 +1,461 @@
+/* ========================================
+   GLOBAL STYLES
+======================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 120px;
-    background-color: rgb(0, 162, 255);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 40px;
-    z-index: 1000;
-}
-.head h1 {
-    color: white;
-    font-family: 'Bookman', serif;
-    font-size: 2.5rem;
-}
-.head a {
-    color: white;
-    text-decoration: none;
 
+:root {
+    --sky-blue: #38bdf8;
+    --sky-blue-dark: #0284c7;
+    --sky-blue-deep: #075985;
+    --sky-blue-light: #e0f5ff;
+    --blue-soft: #bae6fd;
+
+    --white: #ffffff;
+    --text-dark: #17324d;
+    --text-light: #5b7185;
+
+    --glass: rgba(255, 255, 255, 0.78);
+    --border: rgba(56, 189, 248, 0.35);
+
+    --shadow: 0 12px 35px rgba(14, 116, 144, 0.15);
 }
 
-.navlink {
-    display: flex;
-    gap: 40px;
+
+/* ========================================
+   BODY
+======================================== */
+body {
+    min-height: 100vh;
+    font-family: Georgia, serif;
+    color: var(--text-dark);
+    background: var(--sky-blue-light);
 }
 
-.navlink a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 900;
-    padding: 8px 12px;
-    transition: 0.3s;
-}
 
-.navlink a:hover {
-    background-color: rgba(112, 207, 255, 0.6);
-    border-radius: 5px;
-}
-.hamburger {
-    display: none;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-}
-
+/* ========================================
+   BACKGROUND IMAGE
+======================================== */
 .bgpic img {
     width: 100%;
     height: 100vh;
+
     object-fit: cover;
-    filter: blur(8px);
+
     position: fixed;
-    z-index: -1;
+    inset: 0;
+
+    filter: blur(5px);
+    transform: scale(1.05);
+
+    z-index: -2;
 }
+
+/* Soft overlay */
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(224, 245, 255, 0.62);
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+
+/* ========================================
+   NAVBAR
+======================================== */
+.navbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 90px;
+
+    background: rgba(3, 148, 210, 0.90);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 55px;
+
+    z-index: 1000;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        0 5px 25px rgba(0, 100, 150, 0.15);
+}
+
+
+/* ========================================
+   LOGO
+======================================== */
+.head h1 {
+    color: white;
+
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 2.2rem;
+
+    letter-spacing: 1px;
+
+    font-weight: 700;
+}
+
+.head a {
+    color: white;
+    text-decoration: none;
+}
+
+
+/* ========================================
+   NAVIGATION
+======================================== */
+.navlink {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.navlink a {
+    position: relative;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 1.05rem;
+
+    font-weight: 600;
+
+    padding: 10px 16px;
+
+    border-radius: 25px;
+
+    transition: all 0.3s ease;
+}
+
+
+/* Navigation underline animation */
+.navlink a::after {
+    content: "";
+
+    position: absolute;
+
+    width: 0;
+    height: 2px;
+
+    left: 50%;
+    bottom: 5px;
+
+    background: white;
+
+    transform: translateX(-50%);
+
+    transition: width 0.3s ease;
+}
+
+.navlink a:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.navlink a:hover::after {
+    width: 45%;
+}
+
+
+/* ========================================
+   HAMBURGER
+======================================== */
+.hamburger {
+    display: none;
+
+    font-size: 30px;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* ========================================
+   ABOUT ME SECTION
+======================================== */
+.about-me-section {
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding: 150px 25px 80px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: transparent;
+}
+
+
+/* ========================================
+   ABOUT ME CONTAINER
+======================================== */
+.about-me-container {
+    display: flex;
+
+    max-width: 1100px;
+
+    width: 100%;
+
+    gap: 60px;
+
+    align-items: center;
+
+    padding: 45px;
+
+    background: var(--glass);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255, 255, 255, 0.85);
+
+    border-radius: 30px;
+
+    box-shadow: var(--shadow);
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* Decorative blue glow */
+.about-me-container::before {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    background: rgba(56, 189, 248, 0.16);
+
+    top: -100px;
+    right: -80px;
+}
+
+
+/* ========================================
+   ABOUT IMAGE
+======================================== */
+.about-me-image {
+    flex: 1 1 350px;
+
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Image frame */
+.about-me-image::before {
+    content: "";
+
+    position: absolute;
+
+    width: 90%;
+    height: 90%;
+
+    border: 2px solid var(--sky-blue);
+
+    border-radius: 25px;
+
+    top: 15px;
+    left: 5%;
+
+    z-index: 0;
+}
+
+
+/* Actual image */
+.about-me-image img {
+    position: relative;
+
+    z-index: 1;
+
+    width: 100%;
+
+    max-width: 430px;
+
+    height: 480px;
+
+    border-radius: 25px;
+
+    border: 8px solid rgba(255, 255, 255, 0.9);
+
+    object-fit: cover;
+
+    padding: 0;
+
+    margin-top: 0;
+
+    box-shadow:
+        0 15px 35px rgba(2, 132, 199, 0.20);
+
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
+}
+
+
+/* Image hover */
+.about-me-image img:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 20px 45px rgba(2, 132, 199, 0.28);
+}
+
+
+/* ========================================
+   ABOUT CONTENT
+======================================== */
+.about-me-content {
+    flex: 2 1 450px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* Small decorative label */
+.about-me-content::before {
+    content: "EVENT STYLIST";
+
+    display: inline-block;
+
+    color: var(--sky-blue-dark);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 12px;
+}
+
+
+/* Heading */
+.about-me-content h2 {
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 2.8rem;
+
+    line-height: 1.2;
+
+    margin-bottom: 22px;
+
+    color: var(--sky-blue-deep);
+
+    text-align: left;
+}
+
+
+/* Decorative line */
+.about-me-content h2::after {
+    content: "";
+
+    display: block;
+
+    width: 65px;
+    height: 4px;
+
+    margin-top: 12px;
+
+    background: linear-gradient(
+        to right,
+        var(--sky-blue),
+        var(--sky-blue-dark)
+    );
+
+    border-radius: 10px;
+}
+
+
+/* Paragraph */
+.about-me-content p {
+    font-size: 1.08rem;
+
+    line-height: 1.8;
+
+    margin-bottom: 18px;
+
+    color: var(--text-light);
+}
+
+
+/* ========================================
+   MOBILE NAVIGATION
+======================================== */
 @media (max-width: 768px) {
+
+    .navbar {
+        height: 80px;
+
+        padding: 0 25px;
+    }
+
+    .head h1 {
+        font-size: 1.7rem;
+    }
+
     .hamburger {
         display: block;
     }
 
     .navlink {
         display: none;
+
         flex-direction: column;
+
         position: absolute;
-        top: 120px;
+
+        top: 80px;
+        left: 0;
         right: 0;
-        background-color: rgb(0, 162, 255);
+
         width: 100%;
-        text-align: center;
-        padding: 20px 0;
+
+        padding: 20px;
+
+        background: rgba(3, 148, 210, 0.96);
+
+        backdrop-filter: blur(12px);
+
+        box-shadow:
+            0 10px 25px rgba(0, 80, 120, 0.15);
     }
 
     .navlink.active {
@@ -81,67 +463,113 @@
     }
 
     .navlink a {
-        padding: 12px 0;
-        font-size: 1.5rem;
+        width: 100%;
+
+        padding: 14px;
+
+        text-align: center;
+
+        font-size: 1.1rem;
     }
-}
-/* About Me Section */
-.about-me-section {
-    width: 100%;
-    padding: 50px 20px;
-    background-color: rgba(0, 162, 255, 0.1); /* subtle background color */
-    display: flex;
-    justify-content: center;
-}
 
-.about-me-container {
-    display: flex;
-    max-width: 1000px;
-    width: 100%;
-    gap: 30px;
-    align-items: center;
-    flex-wrap: wrap; 
-}
 
-.about-me-image {
-    flex: 1 1 300px;
-}
+    /* About section */
+    .about-me-section {
+        padding: 120px 18px 50px;
 
-.about-me-image img {
-    width: 100%;
-    border-radius: 20px;
-    border: solid rgba(0, 162, 255, 0.532);
-    border-width: 20px;
-    object-fit: cover;
-    padding: 2px;
-    margin-top: 20%;
-}
+        align-items: flex-start;
+    }
 
-.about-me-content {
-    flex: 2 1 400px; 
-}
-
-.about-me-content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    text-align: left;
-    color: rgb(0, 0, 0);
-}
-
-.about-me-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    color: rgb(0, 0, 0);
-}
-
-@media (max-width: 768px) {
     .about-me-container {
         flex-direction: column;
+
+        gap: 35px;
+
+        padding: 30px 20px;
+
+        border-radius: 25px;
+    }
+
+
+    /* Image */
+    .about-me-image {
+        width: 100%;
+    }
+
+    .about-me-image img {
+        width: 100%;
+
+        max-width: 350px;
+
+        height: 400px;
+    }
+
+    .about-me-image::before {
+        width: 85%;
+        height: 90%;
+
+        left: 7.5%;
+    }
+
+
+    /* Content */
+    .about-me-content {
+        width: 100%;
+
         text-align: center;
+    }
+
+    .about-me-content::before {
+        font-size: 0.7rem;
     }
 
     .about-me-content h2 {
+        font-size: 2.2rem;
+
         text-align: center;
+    }
+
+    .about-me-content h2::after {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .about-me-content p {
+        font-size: 1rem;
+
+        line-height: 1.7;
+    }
+}
+
+
+/* ========================================
+   SMALL MOBILE DEVICES
+======================================== */
+@media (max-width: 480px) {
+
+    .head h1 {
+        font-size: 1.4rem;
+    }
+
+    .about-me-section {
+        padding: 110px 12px 40px;
+    }
+
+    .about-me-container {
+        padding: 25px 16px;
+    }
+
+    .about-me-image img {
+        height: 330px;
+
+        border-width: 6px;
+    }
+
+    .about-me-content h2 {
+        font-size: 1.9rem;
+    }
+
+    .about-me-content p {
+        font-size: 0.95rem;
     }
 }

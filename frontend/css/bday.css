@@ -1,86 +1,495 @@
+
+/* ========================================
+   GLOBAL
+======================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.navbar {
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Georgia, serif;
+    color: #17324d;
+    overflow-x: hidden;
+}
+
+
+/* ========================================
+   BACKGROUND IMAGE
+======================================== */
+
+.bgpic img {
     position: fixed;
     top: 0;
+    left: 0;
+
     width: 100%;
-    height: 120px;
-    background-color: rgb(0, 162, 255);
+    height: 100vh;
+
+    object-fit: cover;
+
+    filter: blur(8px);
+
+    transform: scale(1.05);
+
+    z-index: -2;
+}
+
+
+/* Light overlay */
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(224, 245, 255, 0.65);
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+
+/* ========================================
+   NAVBAR
+======================================== */
+
+.navbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 90px;
+
+    background: rgba(3, 148, 210, 0.97);
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px;
+
+    padding: 0 5%;
+
     z-index: 1000;
+
+    box-shadow:
+        0 5px 20px rgba(0, 100, 150, 0.20);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.3);
 }
+
+
+/* ========================================
+   LOGO / TITLE
+======================================== */
+
+.head {
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+}
+
 .head h1 {
     color: white;
-    font-family: 'Bookman', serif;
-    font-size: 2.5rem;
+
+    font-family:
+        "Bookman",
+        Georgia,
+        serif;
+
+    font-size: clamp(1.4rem, 3vw, 2.3rem);
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
 }
+
 .head a {
-    color: white;
     text-decoration: none;
+    color: white;
 }
+
+
+/* ========================================
+   NAVIGATION LINKS
+======================================== */
 
 .navlink {
     display: flex;
-    gap: 40px;
+
+    align-items: center;
+
+    gap: clamp(5px, 2vw, 25px);
 }
 
 .navlink a {
     color: white;
+
     text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 900;
-    padding: 8px 12px;
-    transition: 0.3s;
+
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+
+    font-weight: 700;
+
+    padding: 10px 14px;
+
+    border-radius: 25px;
+
+    transition: all 0.3s ease;
+
+    white-space: nowrap;
 }
 
 .navlink a:hover {
-    background-color: rgba(112, 207, 255, 0.6);
-    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.18);
+
+    transform: translateY(-2px);
 }
+
+
+/* ========================================
+   HAMBURGER
+======================================== */
+
 .hamburger {
     display: none;
-    font-size: 30px;
+
     color: white;
+
+    font-size: 30px;
+
     cursor: pointer;
+
+    line-height: 1;
+
+    flex-shrink: 0;
 }
 
-.bgpic img {
+
+/* ========================================
+   MAIN SERVICES SECTION
+======================================== */
+
+.services {
     width: 100%;
-    height: 100vh;
-    object-fit: cover;
-    filter: blur(8px);
-    position: fixed;
-    z-index: -1;
-}
-.content {
-    
-    padding-top: 150px;
-    color: rgb(0, 0, 0);
-    font-family: Georgia, serif;
+
+    /*
+       Navbar is 90px.
+       Add 30px extra spacing.
+    */
+    padding-top: 120px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+
+    padding-bottom: 60px;
+
+    text-align: center;
 }
 
+
+/* ========================================
+   SERVICES TITLE
+======================================== */
+
+.services h1 {
+    font-family:
+        "Dancing Script",
+        cursive;
+
+    font-size:
+        clamp(2.2rem, 5vw, 3.5rem);
+
+    line-height: 1.2;
+
+    color: #075985;
+
+    margin-bottom: 10px;
+
+    /*
+       Prevents text from being cut.
+    */
+    white-space: normal;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ========================================
+   SUBTITLE
+======================================== */
+
+.subtitle {
+    width: 100%;
+
+    max-width: 750px;
+
+    margin: 0 auto 35px;
+
+    color: #36566d;
+
+    font-size:
+        clamp(0.95rem, 2vw, 1.1rem);
+
+    line-height: 1.7;
+
+    text-align: center;
+}
+
+
+/* ========================================
+   SERVICE CARD
+======================================== */
+
+.service-box {
+    width: 100%;
+
+    max-width: 800px;
+
+    margin: 0 auto;
+
+    padding:
+        clamp(20px, 5vw, 35px);
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    border:
+        1px solid rgba(56, 189, 248, 0.35);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(14, 116, 144, 0.15);
+
+    text-align: left;
+}
+
+
+/* ========================================
+   SERVICE LIST
+======================================== */
+
+.service-box ul {
+    list-style: none;
+
+    margin: 0 0 30px;
+
+    padding: 0;
+}
+
+.service-box li {
+    padding: 14px 5px;
+
+    border-bottom:
+        1px solid #e5f4fa;
+
+    font-size:
+        clamp(0.95rem, 2vw, 1.05rem);
+
+    color: #36566d;
+
+    line-height: 1.5;
+}
+
+.service-box li:last-child {
+    border-bottom: none;
+}
+
+
+/* ========================================
+   MESSAGE
+======================================== */
+
+.message {
+    font-size:
+        clamp(0.95rem, 2vw, 1.05rem);
+
+    color: #17324d;
+
+    line-height: 1.7;
+
+    margin-bottom: 25px;
+
+    text-align: center;
+}
+
+
+/* ========================================
+   BUTTON
+======================================== */
+
+.btn {
+    display: inline-block;
+
+    padding: 13px 32px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #0284c7
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.btn:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #0284c7,
+            #075985
+        );
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 18px rgba(2, 132, 199, 0.3);
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 992px) {
+
+    .navbar {
+        height: 85px;
+
+        padding:
+            0 30px;
+    }
+
+    .head h1 {
+        font-size: 2rem;
+    }
+
+    .navlink {
+        gap: 8px;
+    }
+
+    .navlink a {
+        font-size: 0.95rem;
+
+        padding:
+            8px 10px;
+    }
+
+    /*
+       Navbar = 85px
+       Content starts at 110px
+    */
+    .services {
+        padding-top: 110px;
+
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .services h1 {
+        font-size: 2.8rem;
+    }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
 
 @media (max-width: 768px) {
+
+    /* -----------------------------
+       NAVBAR
+    ----------------------------- */
+
+    .navbar {
+        height: 80px;
+
+        padding:
+            0 20px;
+    }
+
+    .head h1 {
+        font-size: 1.65rem;
+
+        /*
+           Important:
+           Keeps the title inside the navbar.
+        */
+        max-width: calc(100vw - 90px);
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+    }
+
+
+    /* -----------------------------
+       HAMBURGER
+    ----------------------------- */
+
     .hamburger {
         display: block;
     }
 
+
+    /* -----------------------------
+       MOBILE NAVIGATION
+    ----------------------------- */
+
     .navlink {
         display: none;
-        flex-direction: column;
+
         position: absolute;
-        top: 120px;
-        right: 0;
-        background-color: rgb(0, 162, 255);
+
+        top: 80px;
+        left: 0;
+
         width: 100%;
-        text-align: center;
-        padding: 20px 0;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 0;
+
+        padding: 10px 20px;
+
+        background:
+            rgba(3, 148, 210, 0.98);
+
+        box-shadow:
+            0 10px 20px rgba(0, 80, 120, 0.2);
     }
 
     .navlink.active {
@@ -88,63 +497,259 @@
     }
 
     .navlink a {
-        padding: 12px 0;
-        font-size: 1.5rem;
+        width: 100%;
+
+        padding: 14px;
+
+        text-align: center;
+
+        font-size: 1.05rem;
     }
 
-.gallery-section h3 {
-    font-size: xx-large;
 
-}
+    /* -----------------------------
+       SERVICES
+    ----------------------------- */
 
-@media (max-width: 600px) {
-    .gallery-item img {
-        height: 150px;
+    .services {
+        /*
+           Navbar = 80px
+           + 25px spacing
+        */
+        padding-top: 105px;
+
+        padding-left: 15px;
+        padding-right: 15px;
+
+        padding-bottom: 40px;
+    }
+
+    .services h1 {
+        font-size:
+            clamp(2rem, 9vw, 2.7rem);
+
+        line-height: 1.25;
+
+        margin-bottom: 12px;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+
+        line-height: 1.6;
+
+        margin-bottom: 25px;
+    }
+
+
+    /* -----------------------------
+       SERVICE BOX
+    ----------------------------- */
+
+    .service-box {
+        padding: 22px;
+
+        border-radius: 18px;
+    }
+
+    .service-box li {
+        font-size: 0.95rem;
+
+        padding: 13px 2px;
+    }
+
+
+    /* -----------------------------
+       MESSAGE
+    ----------------------------- */
+
+    .message {
+        font-size: 0.95rem;
+
+        line-height: 1.6;
+    }
+
+
+    /* -----------------------------
+       BUTTON
+    ----------------------------- */
+
+    .btn {
+        display: block;
+
+        width: 100%;
+
+        text-align: center;
+
+        padding: 13px;
     }
 }
-}
-.gallery-section {
-    max-width: 1000px;
-    margin: 50px auto;
-    text-align: center;
-    padding: 20px;
 
-    /* Push gallery below fixed navbar */
-    padding-top: 140px;
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .navbar {
+        height: 70px;
+
+        padding:
+            0 15px;
+    }
+
+    .head h1 {
+        font-size: 1.35rem;
+
+        /*
+           Prevent logo/title from
+           pushing the hamburger away.
+        */
+        max-width:
+            calc(100vw - 75px);
+    }
+
+    .hamburger {
+        font-size: 26px;
+    }
+
+
+    /* Mobile dropdown matches navbar */
+    .navlink {
+        top: 70px;
+
+        padding:
+            8px 15px;
+    }
+
+    .navlink a {
+        padding: 13px;
+
+        font-size: 1rem;
+    }
+
+
+    /* -----------------------------
+       SERVICES
+    ----------------------------- */
+
+    .services {
+        /*
+           Navbar = 70px
+           + 25px spacing
+        */
+        padding-top: 95px;
+
+        padding-left: 12px;
+        padding-right: 12px;
+
+        padding-bottom: 35px;
+    }
+
+    .services h1 {
+        font-size:
+            clamp(1.9rem, 10vw, 2.4rem);
+
+        line-height: 1.25;
+
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 0.92rem;
+
+        line-height: 1.6;
+
+        margin-bottom: 20px;
+    }
+
+    .service-box {
+        padding: 18px;
+
+        border-radius: 16px;
+    }
+
+    .service-box li {
+        font-size: 0.9rem;
+
+        line-height: 1.5;
+
+        padding: 11px 0;
+    }
+
+    .message {
+        font-size: 0.9rem;
+
+        line-height: 1.6;
+    }
+
+    .btn {
+        font-size: 0.95rem;
+
+        padding: 12px;
+    }
 }
 
-.gallery-section h3 {
 
-    font-size: xx-large;
-    margin-bottom: 30px;
-    color: rgb(0, 0, 0);
-    background-color:  rgba(113, 196, 255, 0.3);
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 15px;
-}
+/* ========================================
+   EXTRA SMALL PHONES
+======================================== */
 
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-.gallery-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-.gallery-item img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
+@media (max-width: 360px) {
 
-@media (max-width: 600px) {
-    .gallery-item img {
-        height: 150px;
+    .navbar {
+        height: 65px;
+
+        padding:
+            0 12px;
+    }
+
+    .head h1 {
+        font-size: 1.2rem;
+
+        max-width:
+            calc(100vw - 65px);
+    }
+
+    .hamburger {
+        font-size: 24px;
+    }
+
+    .navlink {
+        top: 65px;
+    }
+
+    .services {
+        /*
+           Navbar = 65px
+           + 20px spacing
+        */
+        padding-top: 85px;
+
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .services h1 {
+        font-size: 1.8rem;
+
+        line-height: 1.3;
+    }
+
+    .subtitle {
+        font-size: 0.88rem;
+    }
+
+    .service-box {
+        padding: 15px;
+    }
+
+    .service-box li {
+        font-size: 0.85rem;
+    }
+
+    .message {
+        font-size: 0.85rem;
     }
 }

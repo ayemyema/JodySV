@@ -1,4 +1,5 @@
 /workspaces/JodySV/backend/src/main/java/com/jodysv/backend/JodySvApplication.java
+/workspaces/JodySV/backend/src/main/java/com/jodysv/backend/config/StaticResourceConfig.java
 /workspaces/JodySV/backend/src/main/java/com/jodysv/backend/config/WebConfig.java
 /workspaces/JodySV/backend/src/main/java/com/jodysv/backend/controller/ImageController.java
 /workspaces/JodySV/backend/src/main/java/com/jodysv/backend/service/ImageService.java

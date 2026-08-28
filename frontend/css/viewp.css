@@ -1,154 +1,639 @@
+/* ========================================
+   GLOBAL STYLES
+======================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 120px;
-    background-color: rgb(0, 162, 255);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 40px;
-    z-index: 1000;
-}
-.head h1 {
-    color: white;
-    font-family: 'Bookman', serif;
-    font-size: 2.5rem;
-}
-.head a {
-    color: white;
-    text-decoration: none;
+
+:root {
+    --sky-blue: #38bdf8;
+    --sky-blue-dark: #0284c7;
+    --sky-blue-deep: #075985;
+    --sky-blue-light: #e0f5ff;
+    --blue-soft: #bae6fd;
+
+    --white: #ffffff;
+
+    --text-dark: #17324d;
+    --text-light: #5b7185;
+
+    --glass: rgba(255, 255, 255, 0.82);
+
+    --border: rgba(56, 189, 248, 0.35);
+
+    --shadow: 0 12px 35px rgba(14, 116, 144, 0.15);
 }
 
-.navlink {
-    display: flex;
-    gap: 40px;
+
+/* ========================================
+   BODY
+======================================== */
+body {
+    min-height: 100vh;
+
+    font-family: Georgia, serif;
+
+    color: var(--text-dark);
+
+    background:
+        linear-gradient(
+            135deg,
+            #e0f5ff 0%,
+            #f7fcff 50%,
+            #d9f3ff 100%
+        );
 }
 
-.navlink a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 900;
-    padding: 8px 12px;
-    transition: 0.3s;
-}
 
-.navlink a:hover {
-    background-color: rgba(112, 207, 255, 0.6);
-    border-radius: 5px;
-}
-.hamburger {
-    display: none;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-}
-
+/* ========================================
+   BACKGROUND IMAGE
+======================================== */
 .bgpic img {
     width: 100%;
     height: 100vh;
+
     object-fit: cover;
-    filter: blur(8px);
+
     position: fixed;
-    z-index: -1;
-}
-.content {
-    
-    padding-top: 150px;
-    color: rgb(0, 0, 0);
-    font-family: Georgia, serif;
+
+    inset: 0;
+
+    filter: blur(5px);
+
+    transform: scale(1.05);
+
+    z-index: -2;
 }
 
+
+/* Soft overlay on background */
+body::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(224, 245, 255, 0.62);
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+
+/* ========================================
+   NAVBAR
+======================================== */
+.navbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 90px;
+
+    background: rgba(3, 148, 210, 0.94);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 55px;
+
+    z-index: 1000;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        0 5px 25px rgba(0, 100, 150, 0.15);
+}
+
+
+/* ========================================
+   WEBSITE NAME / LOGO
+======================================== */
+.head h1 {
+    color: white;
+
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 2.2rem;
+
+    letter-spacing: 1px;
+
+    font-weight: 700;
+}
+
+.head a {
+    color: white;
+
+    text-decoration: none;
+}
+
+
+/* ========================================
+   NAVIGATION LINKS
+======================================== */
+.navlink {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.navlink a {
+    position: relative;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 1.05rem;
+
+    font-weight: 600;
+
+    padding: 10px 16px;
+
+    border-radius: 25px;
+
+    transition: all 0.3s ease;
+}
+
+.navlink a:hover {
+    background: rgba(255, 255, 255, 0.16);
+
+    transform: translateY(-1px);
+}
+
+
+/* Animated underline */
+.navlink a::after {
+    content: "";
+
+    position: absolute;
+
+    width: 0;
+    height: 2px;
+
+    left: 50%;
+    bottom: 5px;
+
+    background: white;
+
+    transform: translateX(-50%);
+
+    transition: width 0.3s ease;
+}
+
+.navlink a:hover::after {
+    width: 45%;
+}
+
+
+/* ========================================
+   HAMBURGER MENU
+======================================== */
+.hamburger {
+    display: none;
+
+    font-size: 30px;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* ========================================
+   MAIN CONTENT
+======================================== */
+.content {
+    min-height: 100vh;
+
+    padding: 135px 25px 70px;
+
+    color: var(--text-dark);
+
+    font-family: Georgia, serif;
+
+    text-align: center;
+}
+
+
+/* ========================================
+   BUTTON CONTAINER
+======================================== */
 .button1 {
     display: flex;
+
     justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 25px;
+
+    flex-wrap: wrap;
 }
 
-.book, .view {
-    border-radius: 20px;
-    width: 150px;
-    height: 50px;
-    font-size: large;
-    border: 2px solid rgb(0, 140, 255);
-    background-color: rgba(100, 201, 255, 0.4);
+
+/* ========================================
+   BOOK / VIEW BUTTONS
+======================================== */
+.book,
+.view {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 155px;
+
+    height: 52px;
+
+    border-radius: 30px;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    border: 2px solid var(--sky-blue-dark);
+
+    background: rgba(255, 255, 255, 0.80);
+
+    color: var(--sky-blue-deep);
+
     cursor: pointer;
-    transition: 0.3s;
+
+    transition: all 0.3s ease;
+
+    box-shadow:
+        0 5px 15px rgba(2, 132, 199, 0.12);
 }
-.book:hover, .view:hover {
-    background-color: rgba(0, 162, 255, 0.7);
+
+.book:hover,
+.view:hover {
+    background:
+        linear-gradient(
+            135deg,
+            var(--sky-blue),
+            var(--sky-blue-dark)
+        );
+
     color: white;
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(2, 132, 199, 0.28);
 }
+
+
+/* ========================================
+   OUR SERVICES SECTION
+======================================== */
 .section {
-    background-color: rgba(0, 162, 255, 0.38);
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 55px auto 0;
+
+    padding: 45px 30px;
+
     text-align: center;
-    padding: 20px 10px;
-    margin-top: 40px;
+
+    background: var(--glass);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border-radius: 28px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.85);
+
+    box-shadow: var(--shadow);
+
+    position: relative;
+
+    /*
+       Important:
+       Keep overflow visible so the heading
+       and decorative elements are not cut off.
+    */
+    overflow: visible;
 }
 
+
+/* Decorative circle */
+.section::before {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(56, 189, 248, 0.10);
+
+    top: -100px;
+
+    right: -70px;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ========================================
+   OUR SERVICES HEADING
+======================================== */
 .section h3 {
-    font-size: xx-large;
+    position: relative;
+
+    z-index: 1;
+
+    display: block;
+
+    width: 100%;
+
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 2.4rem;
+
+    line-height: 1.3;
+
+    color: var(--sky-blue-deep);
+
+    margin: 0 0 30px;
+
+    padding: 0 10px;
+
+    text-align: center;
+
+    white-space: normal;
+
+    word-wrap: break-word;
 }
+
+
+/* Decorative line below heading */
+.section h3::after {
+    content: "";
+
+    display: block;
+
+    width: 65px;
+
+    height: 4px;
+
+    margin: 12px auto 0;
+
+    background:
+        linear-gradient(
+            to right,
+            var(--sky-blue),
+            var(--sky-blue-dark)
+        );
+
+    border-radius: 10px;
+}
+
+
+/* ========================================
+   SERVICE CONTAINER
+======================================== */
 .service {
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: rgba(113, 196, 255, 0.3);
-    border-radius: 15px;
+    position: relative;
 
+    z-index: 1;
+
+    width: 100%;
+
+    max-width: 850px;
+
+    margin: 30px auto;
+
+    padding: 30px;
+
+    background:
+        rgba(224, 245, 255, 0.70);
+
+    border-radius: 22px;
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:
+        0 8px 25px rgba(14, 116, 144, 0.10);
 }
 
+
+/* ========================================
+   SERVICE TITLE
+======================================== */
+.service a {
+    display: inline-block;
+
+    text-decoration: none;
+
+    color: var(--sky-blue-deep) !important;
+
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 1.9rem;
+
+    font-weight: 700;
+
+    margin-bottom: 22px;
+
+    transition: all 0.3s ease;
+}
+
+.service a:hover {
+    color: var(--sky-blue-dark) !important;
+
+    transform: translateY(-2px);
+}
+
+
+/* ========================================
+   SERVICE LIST
+======================================== */
 .service ul {
     list-style: none;
+
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
     gap: 20px;
+
     text-align: center;
 }
 
+
+/* ========================================
+   SERVICE CARDS
+======================================== */
 .service ul li {
-    padding: 15px 20px;
-    border: 2px solid rgb(0, 140, 255);
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.8);
-    font-size: 18px;
+    position: relative;
+
+    padding: 22px 20px;
+
+    border:
+        1px solid rgba(56, 189, 248, 0.40);
+
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.90);
+
+    color: var(--text-dark);
+
+    font-size: 1.05rem;
+
+    font-weight: 600;
+
     cursor: pointer;
-    transition: all 0.3s ease;
-    
-}
-.service a {
-    text-decoration: none;
-    color:black !important;
-    font-size: 30px;
-}
-.service ul li:hover {
-    background-color: rgb(0, 162, 255);
-    color: white;
-    transform: scale(1.05);
+
+    box-shadow:
+        0 5px 15px rgba(14, 116, 144, 0.08);
+
+    transition:
+        all 0.3s ease;
+
+    overflow: hidden;
 }
 
+
+/* Blue accent on left */
+.service ul li::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 5px;
+
+    height: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--sky-blue),
+            var(--sky-blue-dark)
+        );
+
+    border-radius: 0 5px 5px 0;
+
+    transition: height 0.3s ease;
+}
+
+
+/* Service hover */
+.service ul li:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #0284c7
+        );
+
+    color: white;
+
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 12px 25px rgba(2, 132, 199, 0.25);
+}
+
+.service ul li:hover::before {
+    height: 100%;
+}
+
+
+/* ========================================
+   GALLERY SECTION TITLE
+======================================== */
+.gallery-section h3 {
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 2.3rem;
+
+    color: var(--sky-blue-deep);
+
+    margin-bottom: 20px;
+}
+
+
+/* ========================================
+   TABLET / MOBILE
+======================================== */
 @media (max-width: 768px) {
+
+    /* ---------- NAVBAR ---------- */
+
+    .navbar {
+        height: 80px;
+
+        padding: 0 25px;
+    }
+
+    .head h1 {
+        font-size: 1.7rem;
+    }
+
     .hamburger {
         display: block;
     }
 
     .navlink {
         display: none;
+
         flex-direction: column;
+
         position: absolute;
-        top: 120px;
-        right: 0;
-        background-color: rgb(0, 162, 255);
+
+        top: 80px;
+
+        left: 0;
+
         width: 100%;
-        text-align: center;
-        padding: 20px 0;
+
+        padding: 20px;
+
+        background:
+            rgba(3, 148, 210, 0.97);
+
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        box-shadow:
+            0 10px 25px rgba(0, 80, 120, 0.15);
     }
 
     .navlink.active {
@@ -156,20 +641,230 @@
     }
 
     .navlink a {
-        padding: 12px 0;
-        font-size: 1.5rem;
+        width: 100%;
+
+        padding: 14px;
+
+        text-align: center;
+
+        font-size: 1.1rem;
+    }
+
+
+    /* ---------- CONTENT ---------- */
+
+    .content {
+        min-height: 100vh;
+
+        /*
+           Enough space for the fixed navbar.
+        */
+        padding-top: 115px;
+
+        padding-left: 15px;
+
+        padding-right: 15px;
+
+        padding-bottom: 50px;
+    }
+
+
+    /* ---------- OUR SERVICES ---------- */
+
+    .section {
+        width: 100%;
+
+        margin: 30px auto 0;
+
+        padding: 35px 15px 40px;
+
+        border-radius: 22px;
+
+        /*
+           Prevent heading from being clipped.
+        */
+        overflow: visible;
+    }
+
+    .section h3 {
+        display: block;
+
+        width: 100%;
+
+        font-size: 2rem;
+
+        line-height: 1.35;
+
+        margin: 0 0 25px;
+
+        padding: 0 5px;
+
+        white-space: normal;
+
+        word-break: normal;
+
+        overflow-wrap: break-word;
+    }
+
+
+    /* ---------- SERVICE ---------- */
+
+    .service {
+        width: 100%;
+
+        max-width: 100%;
+
+        margin: 20px auto 0;
+
+        padding: 22px 15px;
+    }
+
+    .service a {
+        font-size: 1.7rem;
+
+        line-height: 1.3;
+
+        margin-bottom: 20px;
     }
 
     .service ul {
         grid-template-columns: 1fr;
+
+        gap: 15px;
     }
 
-.gallery-section h3 {
-    font-size: xx-large;
+    .service ul li {
+        width: 100%;
 
+        padding: 18px 15px;
+    }
+
+
+    /* ---------- GALLERY ---------- */
+
+    .gallery-section h3 {
+        font-size: 2rem;
+    }
 }
 
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
 @media (max-width: 600px) {
+
+    /* ---------- NAVBAR ---------- */
+
+    .navbar {
+        height: 75px;
+
+        padding: 0 18px;
+    }
+
+    .head h1 {
+        font-size: 1.4rem;
+
+        letter-spacing: 0.5px;
+    }
+
+
+    /* ---------- CONTENT ---------- */
+
+    .content {
+        padding-top: 100px;
+
+        padding-left: 10px;
+
+        padding-right: 10px;
+
+        padding-bottom: 40px;
+    }
+
+
+    /* ---------- BUTTONS ---------- */
+
+    .button1 {
+        flex-direction: column;
+
+        width: 100%;
+
+        gap: 12px;
+    }
+
+    .book,
+    .view {
+        width: 85%;
+
+        max-width: 300px;
+
+        height: 50px;
+    }
+
+
+    /* ---------- OUR SERVICES ---------- */
+
+    .section {
+        width: 100%;
+
+        margin-top: 25px;
+
+        padding: 30px 12px 35px;
+
+        border-radius: 20px;
+    }
+
+    .section h3 {
+        font-size: 1.7rem;
+
+        line-height: 1.4;
+
+        margin-bottom: 22px;
+
+        padding: 0;
+    }
+
+
+    /* ---------- SERVICE ---------- */
+
+    .service {
+        width: 100%;
+
+        margin-top: 15px;
+
+        padding: 20px 12px;
+
+        border-radius: 18px;
+    }
+
+    .service a {
+        font-size: 1.45rem;
+
+        line-height: 1.4;
+    }
+
+    .service ul {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+    .service ul li {
+        width: 100%;
+
+        padding: 17px 12px;
+
+        font-size: 0.95rem;
+
+        line-height: 1.4;
+    }
+
+
+    /* ---------- GALLERY ---------- */
+
+    .gallery-section h3 {
+        font-size: 1.7rem;
+    }
+
     .gallery-item img {
         height: 150px;
     }
