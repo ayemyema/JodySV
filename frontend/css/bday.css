@@ -17,7 +17,30 @@ body {
     min-height: 100vh;
     font-family: Georgia, serif;
     color: #17324d;
+    background: #eaf8ff;
     overflow-x: hidden;
+}
+
+
+/* ========================================
+   COLOR VARIABLES
+======================================== */
+
+:root {
+    --sky-blue: #38bdf8;
+    --sky-blue-dark: #0284c7;
+    --sky-blue-deep: #075985;
+    --sky-blue-light: #e0f5ff;
+
+    --white: #ffffff;
+
+    --text-dark: #17324d;
+    --text-light: #5b7185;
+
+    --border: rgba(56, 189, 248, 0.35);
+
+    --shadow:
+        0 10px 30px rgba(14, 116, 144, 0.15);
 }
 
 
@@ -27,6 +50,7 @@ body {
 
 .bgpic img {
     position: fixed;
+
     top: 0;
     left: 0;
 
@@ -35,7 +59,7 @@ body {
 
     object-fit: cover;
 
-    filter: blur(8px);
+    filter: blur(6px);
 
     transform: scale(1.05);
 
@@ -44,13 +68,15 @@ body {
 
 
 /* Light overlay */
+
 body::before {
     content: "";
 
     position: fixed;
+
     inset: 0;
 
-    background: rgba(224, 245, 255, 0.65);
+    background: rgba(224, 245, 255, 0.72);
 
     z-index: -1;
 
@@ -74,8 +100,10 @@ body::before {
     background: rgba(3, 148, 210, 0.97);
 
     display: flex;
-    justify-content: space-between;
+
     align-items: center;
+
+    justify-content: space-between;
 
     padding: 0 5%;
 
@@ -90,13 +118,10 @@ body::before {
 
 
 /* ========================================
-   LOGO / TITLE
+   LOGO
 ======================================== */
 
 .head {
-    display: flex;
-    align-items: center;
-
     flex-shrink: 0;
 }
 
@@ -108,7 +133,8 @@ body::before {
         Georgia,
         serif;
 
-    font-size: clamp(1.4rem, 3vw, 2.3rem);
+    font-size:
+        clamp(1.5rem, 3vw, 2.3rem);
 
     line-height: 1;
 
@@ -120,13 +146,14 @@ body::before {
 }
 
 .head a {
-    text-decoration: none;
     color: white;
+
+    text-decoration: none;
 }
 
 
 /* ========================================
-   NAVIGATION LINKS
+   NAVIGATION
 ======================================== */
 
 .navlink {
@@ -134,7 +161,7 @@ body::before {
 
     align-items: center;
 
-    gap: clamp(5px, 2vw, 25px);
+    gap: 10px;
 }
 
 .navlink a {
@@ -142,7 +169,8 @@ body::before {
 
     text-decoration: none;
 
-    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    font-size:
+        clamp(0.9rem, 1.4vw, 1.1rem);
 
     font-weight: 700;
 
@@ -151,12 +179,11 @@ body::before {
     border-radius: 25px;
 
     transition: all 0.3s ease;
-
-    white-space: nowrap;
 }
 
 .navlink a:hover {
-    background: rgba(255, 255, 255, 0.18);
+    background:
+        rgba(255, 255, 255, 0.18);
 
     transform: translateY(-2px);
 }
@@ -173,207 +200,198 @@ body::before {
 
     font-size: 30px;
 
-    cursor: pointer;
-
     line-height: 1;
 
-    flex-shrink: 0;
+    cursor: pointer;
+
+    user-select: none;
 }
 
 
 /* ========================================
-   MAIN SERVICES SECTION
+   GALLERY SECTION
 ======================================== */
 
-.services {
-    width: 100%;
+.gallery-section {
+    position: relative;
+
+    width: min(
+        1100px,
+        calc(100% - 40px)
+    );
 
     /*
-       Navbar is 90px.
-       Add 30px extra spacing.
+       Navbar = 90px
+       Extra space = 35px
     */
-    padding-top: 120px;
+    margin: 125px auto 50px;
 
-    padding-left: 20px;
-    padding-right: 20px;
-
-    padding-bottom: 60px;
+    padding: 30px;
 
     text-align: center;
-}
-
-
-/* ========================================
-   SERVICES TITLE
-======================================== */
-
-.services h1 {
-    font-family:
-        "Dancing Script",
-        cursive;
-
-    font-size:
-        clamp(2.2rem, 5vw, 3.5rem);
-
-    line-height: 1.2;
-
-    color: #075985;
-
-    margin-bottom: 10px;
-
-    /*
-       Prevents text from being cut.
-    */
-    white-space: normal;
-
-    overflow-wrap: break-word;
-}
-
-
-/* ========================================
-   SUBTITLE
-======================================== */
-
-.subtitle {
-    width: 100%;
-
-    max-width: 750px;
-
-    margin: 0 auto 35px;
-
-    color: #36566d;
-
-    font-size:
-        clamp(0.95rem, 2vw, 1.1rem);
-
-    line-height: 1.7;
-
-    text-align: center;
-}
-
-
-/* ========================================
-   SERVICE CARD
-======================================== */
-
-.service-box {
-    width: 100%;
-
-    max-width: 800px;
-
-    margin: 0 auto;
-
-    padding:
-        clamp(20px, 5vw, 35px);
 
     background:
-        rgba(255, 255, 255, 0.94);
+        rgba(255, 255, 255, 0.92);
+
+    backdrop-filter: blur(12px);
+
+    -webkit-backdrop-filter: blur(12px);
 
     border:
-        1px solid rgba(56, 189, 248, 0.35);
+        1px solid rgba(255, 255, 255, 0.8);
 
-    border-radius: 20px;
+    border-radius: 24px;
 
-    box-shadow:
-        0 10px 30px rgba(14, 116, 144, 0.15);
-
-    text-align: left;
+    box-shadow: var(--shadow);
 }
 
 
 /* ========================================
-   SERVICE LIST
+   BIRTHDAY EVENTS TITLE
 ======================================== */
 
-.service-box ul {
-    list-style: none;
+.gallery-section h3 {
+    width: 100%;
 
-    margin: 0 0 30px;
+    margin: 0 auto 28px;
 
-    padding: 0;
-}
+    color: var(--sky-blue-deep);
 
-.service-box li {
-    padding: 14px 5px;
+    font-family:
+        "Bookman",
+        Georgia,
+        serif;
 
-    border-bottom:
-        1px solid #e5f4fa;
-
+    /*
+       Smaller than before so it
+       doesn't get cut off.
+    */
     font-size:
-        clamp(0.95rem, 2vw, 1.05rem);
+        clamp(1.8rem, 4vw, 2.5rem);
 
-    color: #36566d;
-
-    line-height: 1.5;
-}
-
-.service-box li:last-child {
-    border-bottom: none;
-}
-
-
-/* ========================================
-   MESSAGE
-======================================== */
-
-.message {
-    font-size:
-        clamp(0.95rem, 2vw, 1.05rem);
-
-    color: #17324d;
-
-    line-height: 1.7;
-
-    margin-bottom: 25px;
+    line-height: 1.3;
 
     text-align: center;
+
+    white-space: normal;
+
+    overflow: visible;
 }
 
 
-/* ========================================
-   BUTTON
-======================================== */
+/* Decorative line */
 
-.btn {
-    display: inline-block;
+.gallery-section h3::after {
+    content: "";
 
-    padding: 13px 32px;
+    display: block;
 
-    border-radius: 30px;
+    width: 60px;
+
+    height: 4px;
+
+    margin: 12px auto 0;
 
     background:
         linear-gradient(
-            135deg,
-            #38bdf8,
-            #0284c7
+            to right,
+            var(--sky-blue),
+            var(--sky-blue-dark)
         );
 
-    color: white;
+    border-radius: 10px;
+}
 
-    font-size: 16px;
 
-    font-weight: bold;
+/* ========================================
+   GALLERY GRID
+======================================== */
 
-    text-decoration: none;
+.gallery {
+    width: 100%;
+
+    display: grid;
+
+    /*
+       4 columns on desktop
+    */
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* ========================================
+   GALLERY ITEM
+======================================== */
+
+.gallery-item {
+    position: relative;
+
+    width: 100%;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: white;
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:
+        0 5px 15px rgba(14, 116, 144, 0.12);
 
     transition:
         transform 0.3s ease,
-        box-shadow 0.3s ease,
-        background 0.3s ease;
+        box-shadow 0.3s ease;
 }
 
-.btn:hover {
-    background:
-        linear-gradient(
-            135deg,
-            #0284c7,
-            #075985
-        );
 
-    transform: translateY(-3px);
+/* ========================================
+   GALLERY IMAGE
+======================================== */
+
+.gallery-item img {
+    display: block;
+
+    width: 100%;
+
+    /*
+       SMALLER IMAGE HEIGHT
+       This prevents the pictures
+       from looking too large.
+    */
+    height: 165px;
+
+    object-fit: cover;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.4s ease,
+        filter 0.3s ease;
+}
+
+
+/* ========================================
+   IMAGE HOVER
+======================================== */
+
+.gallery-item:hover {
+    transform: translateY(-5px);
 
     box-shadow:
-        0 8px 18px rgba(2, 132, 199, 0.3);
+        0 12px 25px rgba(2, 132, 199, 0.22);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+
+    filter: brightness(1.05);
 }
 
 
@@ -386,8 +404,7 @@ body::before {
     .navbar {
         height: 85px;
 
-        padding:
-            0 30px;
+        padding: 0 30px;
     }
 
     .head h1 {
@@ -395,29 +412,35 @@ body::before {
     }
 
     .navlink {
-        gap: 8px;
+        gap: 3px;
     }
 
     .navlink a {
         font-size: 0.95rem;
 
-        padding:
-            8px 10px;
+        padding: 9px 10px;
     }
 
-    /*
-       Navbar = 85px
-       Content starts at 110px
-    */
-    .services {
-        padding-top: 110px;
 
-        padding-left: 25px;
-        padding-right: 25px;
+    /* Gallery */
+
+    .gallery-section {
+        width: calc(100% - 40px);
+
+        margin-top: 115px;
+
+        padding: 25px;
     }
 
-    .services h1 {
-        font-size: 2.8rem;
+    .gallery {
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 15px;
+    }
+
+    .gallery-item img {
+        height: 155px;
     }
 }
 
@@ -428,44 +451,28 @@ body::before {
 
 @media (max-width: 768px) {
 
-    /* -----------------------------
+    /* ------------------------------------
        NAVBAR
-    ----------------------------- */
+    ------------------------------------ */
 
     .navbar {
         height: 80px;
 
-        padding:
-            0 20px;
+        padding: 0 20px;
     }
 
     .head h1 {
-        font-size: 1.65rem;
-
-        /*
-           Important:
-           Keeps the title inside the navbar.
-        */
-        max-width: calc(100vw - 90px);
-
-        overflow: hidden;
-
-        text-overflow: ellipsis;
+        font-size: 1.55rem;
     }
-
-
-    /* -----------------------------
-       HAMBURGER
-    ----------------------------- */
 
     .hamburger {
         display: block;
     }
 
 
-    /* -----------------------------
+    /* ------------------------------------
        MOBILE NAVIGATION
-    ----------------------------- */
+    ------------------------------------ */
 
     .navlink {
         display: none;
@@ -473,6 +480,7 @@ body::before {
         position: absolute;
 
         top: 80px;
+
         left: 0;
 
         width: 100%;
@@ -483,13 +491,13 @@ body::before {
 
         gap: 0;
 
-        padding: 10px 20px;
+        padding: 10px 20px 15px;
 
         background:
             rgba(3, 148, 210, 0.98);
 
         box-shadow:
-            0 10px 20px rgba(0, 80, 120, 0.2);
+            0 10px 25px rgba(0, 80, 120, 0.18);
     }
 
     .navlink.active {
@@ -507,81 +515,55 @@ body::before {
     }
 
 
-    /* -----------------------------
-       SERVICES
-    ----------------------------- */
+    /* ------------------------------------
+       GALLERY
+    ------------------------------------ */
 
-    .services {
+    .gallery-section {
+        width: calc(100% - 24px);
+
         /*
            Navbar = 80px
            + 25px spacing
         */
-        padding-top: 105px;
+        margin-top: 105px;
 
-        padding-left: 15px;
-        padding-right: 15px;
+        padding: 22px 15px 30px;
 
-        padding-bottom: 40px;
+        border-radius: 20px;
     }
 
-    .services h1 {
+
+    /* Birthday Events */
+
+    .gallery-section h3 {
         font-size:
-            clamp(2rem, 9vw, 2.7rem);
+            clamp(1.7rem, 8vw, 2.2rem);
 
         line-height: 1.25;
 
-        margin-bottom: 12px;
-    }
+        margin-bottom: 22px;
 
-    .subtitle {
-        font-size: 1rem;
-
-        line-height: 1.6;
-
-        margin-bottom: 25px;
+        padding: 0;
     }
 
 
-    /* -----------------------------
-       SERVICE BOX
-    ----------------------------- */
+    /* 2 columns */
 
-    .service-box {
-        padding: 22px;
+    .gallery {
+        grid-template-columns:
+            repeat(2, 1fr);
 
-        border-radius: 18px;
-    }
-
-    .service-box li {
-        font-size: 0.95rem;
-
-        padding: 13px 2px;
+        gap: 12px;
     }
 
 
-    /* -----------------------------
-       MESSAGE
-    ----------------------------- */
-
-    .message {
-        font-size: 0.95rem;
-
-        line-height: 1.6;
+    .gallery-item {
+        border-radius: 12px;
     }
 
-
-    /* -----------------------------
-       BUTTON
-    ----------------------------- */
-
-    .btn {
-        display: block;
-
-        width: 100%;
-
-        text-align: center;
-
-        padding: 13px;
+    .gallery-item img {
+        height: 135px;
     }
 }
 
@@ -595,161 +577,100 @@ body::before {
     .navbar {
         height: 70px;
 
-        padding:
-            0 15px;
+        padding: 0 15px;
     }
 
     .head h1 {
-        font-size: 1.35rem;
-
-        /*
-           Prevent logo/title from
-           pushing the hamburger away.
-        */
-        max-width:
-            calc(100vw - 75px);
+        font-size: 1.3rem;
     }
 
     .hamburger {
-        font-size: 26px;
+        font-size: 27px;
     }
 
 
-    /* Mobile dropdown matches navbar */
     .navlink {
         top: 70px;
 
         padding:
-            8px 15px;
-    }
-
-    .navlink a {
-        padding: 13px;
-
-        font-size: 1rem;
+            8px
+            15px
+            12px;
     }
 
 
-    /* -----------------------------
-       SERVICES
-    ----------------------------- */
+    /* ------------------------------------
+       GALLERY
+    ------------------------------------ */
 
-    .services {
-        /*
-           Navbar = 70px
-           + 25px spacing
-        */
-        padding-top: 95px;
+    .gallery-section {
+        width: calc(100% - 20px);
 
-        padding-left: 12px;
-        padding-right: 12px;
+        margin-top: 90px;
 
-        padding-bottom: 35px;
+        padding: 20px 12px 25px;
+
+        border-radius: 18px;
     }
 
-    .services h1 {
-        font-size:
-            clamp(1.9rem, 10vw, 2.4rem);
 
-        line-height: 1.25;
-
-        margin-bottom: 10px;
-    }
-
-    .subtitle {
-        font-size: 0.92rem;
-
-        line-height: 1.6;
+    .gallery-section h3 {
+        font-size: 1.7rem;
 
         margin-bottom: 20px;
     }
 
-    .service-box {
-        padding: 18px;
 
-        border-radius: 16px;
+    .gallery {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
     }
 
-    .service-box li {
-        font-size: 0.9rem;
 
-        line-height: 1.5;
-
-        padding: 11px 0;
-    }
-
-    .message {
-        font-size: 0.9rem;
-
-        line-height: 1.6;
-    }
-
-    .btn {
-        font-size: 0.95rem;
-
-        padding: 12px;
+    .gallery-item img {
+        height: 120px;
     }
 }
 
 
 /* ========================================
-   EXTRA SMALL PHONES
+   EXTRA SMALL PHONE
 ======================================== */
 
 @media (max-width: 360px) {
 
-    .navbar {
-        height: 65px;
+    .head h1 {
+        font-size: 1.15rem;
+    }
+
+
+    .gallery-section {
+        width: calc(100% - 16px);
+
+        margin-top: 88px;
 
         padding:
-            0 12px;
+            18px
+            10px
+            22px;
     }
 
-    .head h1 {
-        font-size: 1.2rem;
 
-        max-width:
-            calc(100vw - 65px);
+    .gallery-section h3 {
+        font-size: 1.5rem;
+
+        margin-bottom: 18px;
     }
 
-    .hamburger {
-        font-size: 24px;
+
+    .gallery {
+        gap: 8px;
     }
 
-    .navlink {
-        top: 65px;
-    }
 
-    .services {
-        /*
-           Navbar = 65px
-           + 20px spacing
-        */
-        padding-top: 85px;
-
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .services h1 {
-        font-size: 1.8rem;
-
-        line-height: 1.3;
-    }
-
-    .subtitle {
-        font-size: 0.88rem;
-    }
-
-    .service-box {
-        padding: 15px;
-    }
-
-    .service-box li {
-        font-size: 0.85rem;
-    }
-
-    .message {
-        font-size: 0.85rem;
+    .gallery-item img {
+        height: 105px;
     }
 }

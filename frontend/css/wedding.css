@@ -1,86 +1,474 @@
+
+/* ========================================
+   GLOBAL
+======================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.navbar {
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Georgia, serif;
+    overflow-x: hidden;
+
+    background: #eaf8ff;
+    color: #17324d;
+}
+
+
+/* ========================================
+   BACKGROUND IMAGE
+======================================== */
+
+.bgpic img {
     position: fixed;
     top: 0;
+    left: 0;
+
     width: 100%;
-    height: 120px;
-    background-color: rgb(0, 162, 255);
+    height: 100vh;
+
+    object-fit: cover;
+
+    filter: blur(7px);
+    transform: scale(1.05);
+
+    z-index: -2;
+}
+
+/* Light overlay so the gallery is readable */
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(224, 245, 255, 0.70);
+
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+/* ========================================
+   NAVBAR
+======================================== */
+
+.navbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 90px;
+
+    background: rgba(3, 148, 210, 0.97);
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px;
+
+    padding: 0 45px;
+
     z-index: 1000;
+
+    box-shadow:
+        0 5px 20px rgba(0, 100, 150, 0.20);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.35);
 }
+
+
+/* ========================================
+   LOGO
+======================================== */
+
+.head {
+    flex-shrink: 0;
+}
+
 .head h1 {
+    margin: 0;
+
     color: white;
-    font-family: 'Bookman', serif;
-    font-size: 2.5rem;
+
+    font-family:
+        "Bookman",
+        Georgia,
+        serif;
+
+    font-size: clamp(1.5rem, 3vw, 2.3rem);
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
 }
+
 .head a {
     color: white;
     text-decoration: none;
 }
 
+
+/* ========================================
+   NAVIGATION
+======================================== */
+
 .navlink {
     display: flex;
-    gap: 40px;
+
+    align-items: center;
+
+    gap: 15px;
 }
 
 .navlink a {
     color: white;
+
     text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 900;
-    padding: 8px 12px;
-    transition: 0.3s;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    padding: 10px 16px;
+
+    border-radius: 25px;
+
+    transition: all 0.3s ease;
 }
 
 .navlink a:hover {
-    background-color: rgba(112, 207, 255, 0.6);
-    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.18);
+
+    transform: translateY(-2px);
 }
+
+
+/* ========================================
+   HAMBURGER
+======================================== */
+
 .hamburger {
     display: none;
-    font-size: 30px;
+
     color: white;
+
+    font-size: 30px;
+
+    line-height: 1;
+
     cursor: pointer;
+
+    user-select: none;
 }
 
-.bgpic img {
+
+/* ========================================
+   GALLERY SECTION
+======================================== */
+
+.gallery-section {
+    position: relative;
+
+    width: min(1100px, calc(100% - 40px));
+
+    margin: 120px auto 50px;
+
+    padding: 35px 30px 40px;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.90);
+
+    border-radius: 25px;
+
+    border:
+        1px solid rgba(56, 189, 248, 0.30);
+
+    box-shadow:
+        0 12px 35px rgba(14, 116, 144, 0.15);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+
+/* ========================================
+   BIRTHDAY EVENTS TITLE
+======================================== */
+
+.gallery-section h3 {
+    display: block;
+
     width: 100%;
-    height: 100vh;
+
+    margin: 0 auto 30px;
+
+    padding: 5px 10px 15px;
+
+    color: #075985;
+
+    font-family:
+        "Bookman",
+        Georgia,
+        serif;
+
+    /*
+       Responsive but not oversized.
+    */
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+
+    line-height: 1.3;
+
+    text-align: center;
+
+    white-space: normal;
+
+    overflow: visible;
+
+    word-wrap: break-word;
+}
+
+/* Small decorative line under title */
+
+.gallery-section h3::after {
+    content: "";
+
+    display: block;
+
+    width: 65px;
+
+    height: 4px;
+
+    margin: 12px auto 0;
+
+    background: #38bdf8;
+
+    border-radius: 10px;
+}
+
+
+/* ========================================
+   GALLERY GRID
+======================================== */
+
+.gallery {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(200px, 1fr)
+        );
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+
+/* ========================================
+   GALLERY ITEM
+======================================== */
+
+.gallery-item {
+    width: 100%;
+
+    overflow: hidden;
+
+    border-radius: 15px;
+
+    background: white;
+
+    border:
+        1px solid rgba(56, 189, 248, 0.30);
+
+    box-shadow:
+        0 5px 15px rgba(14, 116, 144, 0.12);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* ========================================
+   BIRTHDAY PHOTOS
+======================================== */
+
+.gallery-item img {
+    display: block;
+
+    width: 100%;
+
+    /*
+       This prevents the photos from
+       becoming huge.
+    */
+    height: 200px;
+
     object-fit: cover;
-    filter: blur(8px);
-    position: fixed;
-    z-index: -1;
-}
-.content {
-    
-    padding-top: 150px;
-    color: rgb(0, 0, 0);
-    font-family: Georgia, serif;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.4s ease,
+        filter 0.3s ease;
 }
 
 
-@media (max-width: 768px) {
-    .hamburger {
-        display: block;
+/* ========================================
+   IMAGE HOVER
+======================================== */
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 25px rgba(2, 132, 199, 0.20);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+
+    filter: brightness(1.05);
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 992px) {
+
+    .navbar {
+        height: 85px;
+
+        padding: 0 30px;
+    }
+
+    .head h1 {
+        font-size: 2rem;
     }
 
     .navlink {
+        gap: 5px;
+    }
+
+    .navlink a {
+        font-size: 0.95rem;
+
+        padding: 9px 12px;
+    }
+
+    .gallery-section {
+        width: calc(100% - 30px);
+
+        margin-top: 110px;
+
+        padding: 30px 25px 35px;
+    }
+
+    .gallery {
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(180px, 1fr)
+            );
+
+        gap: 16px;
+    }
+
+    .gallery-item img {
+        height: 190px;
+    }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    /* -------------------------------
+       NAVBAR
+    ------------------------------- */
+
+    .navbar {
+        height: 75px;
+
+        padding: 0 18px;
+    }
+
+    .head h1 {
+        font-size: 1.55rem;
+
+        /*
+           Important:
+           keeps Jody SV inside navbar.
+        */
+        max-width: calc(100vw - 80px);
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+    /* -------------------------------
+       HAMBURGER
+    ------------------------------- */
+
+    .hamburger {
+        display: block;
+
+        flex-shrink: 0;
+    }
+
+
+    /* -------------------------------
+       MOBILE MENU
+    ------------------------------- */
+
+    .navlink {
         display: none;
-        flex-direction: column;
+
         position: absolute;
-        top: 120px;
-        right: 0;
-        background-color: rgb(0, 162, 255);
+
+        top: 75px;
+        left: 0;
+
         width: 100%;
-        text-align: center;
-        padding: 20px 0;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 0;
+
+        padding: 10px 15px;
+
+        background:
+            rgba(3, 148, 210, 0.98);
+
+        box-shadow:
+            0 8px 20px rgba(0, 80, 120, 0.20);
     }
 
     .navlink.active {
@@ -88,63 +476,237 @@
     }
 
     .navlink a {
-        padding: 12px 0;
-        font-size: 1.5rem;
+        width: 100%;
+
+        padding: 14px;
+
+        text-align: center;
+
+        font-size: 1.05rem;
+
+        border-radius: 10px;
     }
 
-.gallery-section h3 {
-    font-size: xx-large;
 
-}
+    /* -------------------------------
+       GALLERY
+    ------------------------------- */
 
-@media (max-width: 600px) {
+    .gallery-section {
+        width: calc(100% - 24px);
+
+        /*
+           Navbar is 75px.
+           Start gallery safely below it.
+        */
+        margin-top: 95px;
+
+        padding:
+            25px
+            12px
+            30px;
+
+        border-radius: 18px;
+    }
+
+
+    /* -------------------------------
+       BIRTHDAY EVENTS TITLE
+    ------------------------------- */
+
+    .gallery-section h3 {
+        width: 100%;
+
+        margin-bottom: 25px;
+
+        padding: 0 5px 12px;
+
+        /*
+           Keeps "Birthday Events"
+           visible on small screens.
+        */
+        font-size: clamp(
+            1.7rem,
+            8vw,
+            2.3rem
+        );
+
+        line-height: 1.25;
+
+        white-space: normal;
+
+        overflow: visible;
+    }
+
+
+    /* -------------------------------
+       GALLERY GRID
+    ------------------------------- */
+
+    .gallery {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+    }
+
+
+    /* -------------------------------
+       MOBILE PHOTOS
+    ------------------------------- */
+
     .gallery-item img {
-        height: 150px;
+        width: 100%;
+
+        /*
+           Much smaller than the
+           previous 200px+ images.
+        */
+        height: 145px;
+
+        object-fit: cover;
+    }
+
+
+    .gallery-item {
+        border-radius: 12px;
     }
 }
-}
-.gallery-section {
-    max-width: 1000px;
-    margin: 50px auto;
-    text-align: center;
-    padding: 20px;
 
-    /* Push gallery below fixed navbar */
-    padding-top: 140px;
-}
 
-.gallery-section h3 {
+/* ========================================
+   SMALL PHONES
+======================================== */
 
-    font-size: xx-large;
-    margin-bottom: 30px;
-    color: rgb(0, 0, 0);
-    background-color:  rgba(113, 196, 255, 0.3);
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 15px;
-}
+@media (max-width: 480px) {
 
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-.gallery-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-.gallery-item img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
+    .navbar {
+        height: 70px;
 
-@media (max-width: 600px) {
+        padding: 0 14px;
+    }
+
+    .head h1 {
+        font-size: 1.35rem;
+    }
+
+    .hamburger {
+        font-size: 27px;
+    }
+
+
+    /* Mobile dropdown */
+
+    .navlink {
+        top: 70px;
+
+        padding: 8px 12px;
+    }
+
+    .navlink a {
+        padding: 13px;
+
+        font-size: 1rem;
+    }
+
+
+    /* Gallery */
+
+    .gallery-section {
+        width: calc(100% - 16px);
+
+        margin-top: 88px;
+
+        padding:
+            22px
+            8px
+            25px;
+
+        border-radius: 15px;
+    }
+
+
+    /* Birthday Events */
+
+    .gallery-section h3 {
+        font-size: 1.8rem;
+
+        line-height: 1.25;
+
+        margin-bottom: 20px;
+    }
+
+
+    /* Photos */
+
+    .gallery {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 9px;
+    }
+
     .gallery-item img {
-        height: 150px;
+        height: 125px;
+    }
+
+    .gallery-item {
+        border-radius: 10px;
+    }
+}
+
+
+/* ========================================
+   EXTRA SMALL PHONES
+======================================== */
+
+@media (max-width: 360px) {
+
+    .navbar {
+        height: 65px;
+
+        padding: 0 12px;
+    }
+
+    .head h1 {
+        font-size: 1.2rem;
+    }
+
+    .hamburger {
+        font-size: 25px;
+    }
+
+
+    .navlink {
+        top: 65px;
+    }
+
+
+    .gallery-section {
+        width: calc(100% - 12px);
+
+        margin-top: 82px;
+
+        padding:
+            20px
+            6px
+            22px;
+    }
+
+
+    .gallery-section h3 {
+        font-size: 1.6rem;
+
+        line-height: 1.2;
+    }
+
+
+    .gallery {
+        gap: 7px;
+    }
+
+
+    .gallery-item img {
+        height: 110px;
     }
 }
