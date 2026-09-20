@@ -1,6 +1,5 @@
-/* ================================
-   GLOBAL STYLES
-================================ */
+
+
 * {
     margin: 0;
     padding: 0;
@@ -20,21 +19,12 @@
     --shadow: 0 12px 35px rgba(14, 116, 144, 0.15);
 }
 
-
-/* ================================
-   BODY
-================================ */
 body {
     min-height: 100vh;
     font-family: "Georgia", serif;
     color: var(--text-dark);
     background: var(--sky-blue-light);
 }
-
-
-/* ================================
-   BACKGROUND IMAGE
-================================ */
 .bgpic img {
     width: 100%;
     height: 100vh;
@@ -402,7 +392,7 @@ body::before {
 
 
 /* ================================
-   GALLERY SECTION
+   GALLERY SECTION & HINT
 ================================ */
 .gallery-section {
     max-width: 1100px;
@@ -413,7 +403,6 @@ body::before {
 
     padding: 100px 25px 30px;
 }
-
 
 /* Gallery title */
 .gallery-section h3 {
@@ -438,10 +427,6 @@ body::before {
     box-shadow: var(--shadow);
 }
 
-
-/* ================================
-   GALLERY GRID
-================================ */
 .gallery {
     display: grid;
 
@@ -616,4 +601,11 @@ body::before {
     .gallery-section h3 {
         font-size: 1.7rem;
     }
+}
+.gallery-hint {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+    font-weight: 600;
 }
