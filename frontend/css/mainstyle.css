@@ -291,6 +291,24 @@ body::before {
 
     margin-bottom: 10px;
 }
+.section1 h5{
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 2.3rem;
+
+    color: #075985;
+
+    margin-bottom: 10px;
+}
+.section h3 {
+    font-family: "Bookman", Georgia, serif;
+
+    font-size: 1.2rem;
+
+    color: #075985;
+
+    margin-bottom: 10px;
+}
 
 
 /* ================================
