@@ -50,7 +50,7 @@ public class ImageService {
 
     public ImageService(
             @Value("${supabase.url:}") String storageUrl,
-            @Value("${supabase.storage.bucket:}") String bucket,
+            @Value("${SUPABASE_STORAGE_BUCKET:event-photos}") String bucket,
             @Value("${supabase.service-role-key:}") String serviceRoleKey
     ) {
         this.storageUrl = storageUrl.replaceAll("/+$", "");
@@ -345,8 +345,8 @@ public class ImageService {
                 serviceRoleKey.isBlank()) {
             throw new IllegalStateException(
                     "Supabase Storage is not configured. Set SUPABASE_URL, "
-                            + "SUPABASE_STORAGE_BUCKET, and "
-                            + "SUPABASE_SERVICE_ROLE_KEY on the backend."
+                            + "SUPABASE_SERVICE_ROLE_KEY, and verify the "
+                            + "storage bucket configuration."
             );
         }
     }
