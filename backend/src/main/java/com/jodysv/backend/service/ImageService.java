@@ -54,7 +54,9 @@ public class ImageService {
             @Value("${supabase.service-role-key:}") String serviceRoleKey
     ) {
         this.storageUrl = storageUrl.replaceAll("/+$", "");
-        this.bucket = bucket;
+        this.bucket = bucket == null || bucket.isBlank()
+                ? "event-photos"
+                : bucket.trim();
         this.serviceRoleKey = serviceRoleKey;
         this.restClient = RestClient.builder().build();
         this.objectMapper = new ObjectMapper();
@@ -338,15 +340,21 @@ public class ImageService {
     }
 
     private void ensureConfigured() {
-        if (storageUrl.isBlank() ||
-                bucket == null ||
-                bucket.isBlank() ||
-                serviceRoleKey == null ||
-                serviceRoleKey.isBlank()) {
+        List<String> missingVariables = new ArrayList<>();
+
+        if (storageUrl.isBlank()) {
+            missingVariables.add("SUPABASE_URL");
+        }
+
+        if (serviceRoleKey == null || serviceRoleKey.isBlank()) {
+            missingVariables.add("SUPABASE_SERVICE_ROLE_KEY");
+        }
+
+        if (!missingVariables.isEmpty()) {
             throw new IllegalStateException(
-                    "Supabase Storage is not configured. Set SUPABASE_URL, "
-                            + "SUPABASE_SERVICE_ROLE_KEY, and verify the "
-                            + "storage bucket configuration."
+                    "Supabase Storage is not configured. Missing backend "
+                            + "environment variable(s): "
+                            + String.join(", ", missingVariables)
             );
         }
     }
