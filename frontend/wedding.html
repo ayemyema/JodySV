@@ -225,7 +225,7 @@
 
             // Add each uploaded picture
             data.images.forEach(
-                filename => {
+                imageInfo => {
 
                     const item =
                         document.createElement(
@@ -243,7 +243,7 @@
 
 
                     image.src =
-                        `${API_URL}/uploads/wedding/${encodeURIComponent(filename)}`;
+                        imageInfo.url;
 
 
                     image.alt =

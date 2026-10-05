@@ -40,10 +40,10 @@ public class ImageController {
                     );
 
             String url =
-                    "/uploads/"
-                    + category
-                    + "/"
-                    + filename;
+                    imageService.getImageUrl(
+                            category,
+                            filename
+                    );
 
             return ResponseEntity.ok(
                     Map.of(
@@ -71,7 +71,7 @@ public class ImageController {
                             )
                     );
 
-        } catch (IOException e) {
+        } catch (IOException | IllegalStateException e) {
 
             return ResponseEntity
                     .internalServerError()
@@ -79,7 +79,7 @@ public class ImageController {
                             Map.of(
                                     "success", false,
                                     "message",
-                                    "Could not save the image."
+                                    e.getMessage()
                             )
                     );
         }
@@ -97,7 +97,7 @@ public class ImageController {
 
         try {
 
-            List<String> images =
+            List<ImageService.ImageInfo> images =
                     imageService.getImages(
                             category
                     );
@@ -122,7 +122,7 @@ public class ImageController {
                             )
                     );
 
-        } catch (IOException e) {
+        } catch (IOException | IllegalStateException e) {
 
             return ResponseEntity
                     .internalServerError()
@@ -130,7 +130,7 @@ public class ImageController {
                             Map.of(
                                     "success", false,
                                     "message",
-                                    "Could not load images."
+                                    e.getMessage()
                             )
                     );
         }
@@ -173,7 +173,7 @@ public class ImageController {
                             )
                     );
 
-        } catch (IOException e) {
+        } catch (IOException | IllegalStateException e) {
 
             return ResponseEntity
                     .internalServerError()
@@ -181,7 +181,7 @@ public class ImageController {
                             Map.of(
                                     "success", false,
                                     "message",
-                                    "Could not delete the image."
+                                    e.getMessage()
                             )
                     );
         }

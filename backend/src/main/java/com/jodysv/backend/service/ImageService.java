@@ -1,25 +1,33 @@
 package com.jodysv.backend.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.net.URI;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class ImageService {
 
-    private final Path uploadDirectory =
-            Paths.get("uploads").toAbsolutePath().normalize();
+    private static final int PAGE_SIZE = 100;
 
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
             "image/jpeg",
@@ -34,23 +42,22 @@ public class ImageService {
             ".webp"
     );
 
-    public ImageService() {
-        try {
-            Files.createDirectories(uploadDirectory);
+    private final String storageUrl;
+    private final String bucket;
+    private final String serviceRoleKey;
+    private final RestClient restClient;
+    private final ObjectMapper objectMapper;
 
-            Files.createDirectories(uploadDirectory.resolve("wedding"));
-            Files.createDirectories(uploadDirectory.resolve("birthday"));
-            Files.createDirectories(uploadDirectory.resolve("christening"));
-            Files.createDirectories(uploadDirectory.resolve("other"));
-
-            System.out.println("Upload directory: " + uploadDirectory);
-
-        } catch (IOException e) {
-            throw new RuntimeException(
-                    "Could not create upload directories.",
-                    e
-            );
-        }
+    public ImageService(
+            @Value("${supabase.url:}") String storageUrl,
+            @Value("${supabase.storage.bucket:}") String bucket,
+            @Value("${supabase.service-role-key:}") String serviceRoleKey
+    ) {
+        this.storageUrl = storageUrl.replaceAll("/+$", "");
+        this.bucket = bucket;
+        this.serviceRoleKey = serviceRoleKey;
+        this.restClient = RestClient.builder().build();
+        this.objectMapper = new ObjectMapper();
     }
 
     public String saveImage(
@@ -110,62 +117,58 @@ public class ImageService {
         }
 
         String safeCategory = sanitizeCategory(category);
-
-        Path categoryDirectory = uploadDirectory
-                .resolve(safeCategory)
-                .normalize();
-
-        Files.createDirectories(categoryDirectory);
-
         String newFilename = UUID.randomUUID()
                 + extension.toLowerCase();
 
-        Path destination = categoryDirectory
-                .resolve(newFilename)
-                .normalize();
+        ensureConfigured();
 
-        if (!destination.startsWith(categoryDirectory)) {
-            throw new IllegalArgumentException(
-                    "Invalid file path."
-            );
+        try {
+            restClient.post()
+                    .uri(objectUri(safeCategory, newFilename))
+                    .header("apikey", serviceRoleKey)
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            "Bearer " + serviceRoleKey
+                    )
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(file.getBytes())
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (RestClientException e) {
+            throw storageException(e);
         }
-
-        Files.copy(
-                file.getInputStream(),
-                destination,
-                StandardCopyOption.REPLACE_EXISTING
-        );
-
-        System.out.println(
-                "Image saved: " + destination
-        );
 
         return newFilename;
     }
 
-    public List<String> getImages(
+    public List<ImageInfo> getImages(
             String category
     ) throws IOException {
 
         String safeCategory = sanitizeCategory(category);
+        ensureConfigured();
 
-        Path categoryDirectory = uploadDirectory
-                .resolve(safeCategory)
-                .normalize();
+        List<ImageInfo> images = new ArrayList<>();
+        int offset = 0;
 
-        if (!Files.exists(categoryDirectory)) {
-            return List.of();
-        }
+        while (true) {
+            List<String> filenames = listImagePage(
+                    safeCategory,
+                    offset
+            );
 
-        try (var files = Files.list(categoryDirectory)) {
+            filenames.forEach(filename ->
+                    images.add(new ImageInfo(
+                            filename,
+                            getImageUrl(safeCategory, filename)
+                    ))
+            );
 
-            return files
-                    .filter(Files::isRegularFile)
-                    .map(path ->
-                            path.getFileName().toString()
-                    )
-                    .sorted()
-                    .toList();
+            if (filenames.size() < PAGE_SIZE) {
+                return images;
+            }
+
+            offset += PAGE_SIZE;
         }
     }
 
@@ -175,26 +178,194 @@ public class ImageService {
     ) throws IOException {
 
         String safeCategory = sanitizeCategory(category);
-
         String safeFilename = Paths.get(filename)
                 .getFileName()
                 .toString();
 
-        Path categoryDirectory = uploadDirectory
-                .resolve(safeCategory)
-                .normalize();
-
-        Path imagePath = categoryDirectory
-                .resolve(safeFilename)
-                .normalize();
-
-        if (!imagePath.startsWith(categoryDirectory)) {
+        if (!safeFilename.equals(filename)) {
             throw new IllegalArgumentException(
                     "Invalid file path."
             );
         }
 
-        Files.deleteIfExists(imagePath);
+        ensureConfigured();
+
+        byte[] requestBody = objectMapper.writeValueAsBytes(
+                Map.of("prefixes", List.of(
+                        safeCategory + "/" + safeFilename
+                ))
+        );
+
+        try {
+            restClient.method(org.springframework.http.HttpMethod.DELETE)
+                    .uri(bucketUri())
+                    .header("apikey", serviceRoleKey)
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            "Bearer " + serviceRoleKey
+                    )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(requestBody)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (RestClientException e) {
+            throw storageException(e);
+        }
+    }
+
+    public String getImageUrl(
+            String category,
+            String filename
+    ) {
+        ensureConfigured();
+
+        return UriComponentsBuilder.fromUriString(storageUrl)
+                .pathSegment(
+                        "storage",
+                        "v1",
+                        "object",
+                        "public",
+                        bucket,
+                        sanitizeCategory(category),
+                        filename
+                )
+                .build()
+                .encode()
+                .toUriString();
+    }
+
+    private List<String> listImagePage(
+            String category,
+            int offset
+    ) throws IOException {
+
+        byte[] requestBody = objectMapper.writeValueAsBytes(
+                Map.of(
+                        "prefix", category + "/",
+                        "limit", PAGE_SIZE,
+                        "offset", offset,
+                        "sortBy", Map.of(
+                                "column", "name",
+                                "order", "asc"
+                        )
+                )
+        );
+
+        try {
+            byte[] responseBody = restClient.post()
+                    .uri(listUri())
+                    .header("apikey", serviceRoleKey)
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            "Bearer " + serviceRoleKey
+                    )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(requestBody)
+                    .retrieve()
+                    .body(byte[].class);
+
+            JsonNode response = objectMapper.readTree(responseBody);
+
+            if (response == null || !response.isArray()) {
+                throw new IOException(
+                        "Supabase Storage returned an invalid image list."
+                );
+            }
+
+            List<String> filenames = new ArrayList<>();
+
+            for (JsonNode item : response) {
+                JsonNode name = item.get("name");
+                JsonNode id = item.get("id");
+
+                if (name != null &&
+                        name.isTextual() &&
+                        id != null &&
+                        !id.isNull()) {
+                    filenames.add(name.asText());
+                }
+            }
+
+            return filenames;
+        } catch (RestClientException e) {
+            throw storageException(e);
+        }
+    }
+
+    private URI objectUri(
+            String category,
+            String filename
+    ) {
+        return UriComponentsBuilder.fromUriString(storageUrl)
+                .pathSegment(
+                        "storage",
+                        "v1",
+                        "object",
+                        bucket,
+                        category,
+                        filename
+                )
+                .build()
+                .encode()
+                .toUri();
+    }
+
+    private URI listUri() {
+        return UriComponentsBuilder.fromUriString(storageUrl)
+                .pathSegment(
+                        "storage",
+                        "v1",
+                        "object",
+                        "list",
+                        bucket
+                )
+                .build()
+                .encode()
+                .toUri();
+    }
+
+    private URI bucketUri() {
+        return UriComponentsBuilder.fromUriString(storageUrl)
+                .pathSegment(
+                        "storage",
+                        "v1",
+                        "object",
+                        bucket
+                )
+                .build()
+                .encode()
+                .toUri();
+    }
+
+    private void ensureConfigured() {
+        if (storageUrl.isBlank() ||
+                bucket == null ||
+                bucket.isBlank() ||
+                serviceRoleKey == null ||
+                serviceRoleKey.isBlank()) {
+            throw new IllegalStateException(
+                    "Supabase Storage is not configured. Set SUPABASE_URL, "
+                            + "SUPABASE_STORAGE_BUCKET, and "
+                            + "SUPABASE_SERVICE_ROLE_KEY on the backend."
+            );
+        }
+    }
+
+    private IOException storageException(RestClientException exception) {
+        if (exception instanceof RestClientResponseException response) {
+            return new IOException(
+                    "Supabase Storage returned HTTP "
+                            + response.getStatusCode().value()
+                            + ". Check the backend storage configuration "
+                            + "and bucket permissions.",
+                    exception
+            );
+        }
+
+        return new IOException(
+                "Could not connect to Supabase Storage.",
+                exception
+        );
     }
 
     private boolean isRealImage(
@@ -243,18 +414,19 @@ public class ImageService {
                 );
 
         return switch (cleaned) {
-
             case "wedding" -> "wedding";
-
             case "birthday" -> "birthday";
-
             case "christening" -> "christening";
-
             case "other" -> "other";
-
             default -> throw new IllegalArgumentException(
                     "Invalid category."
             );
         };
+    }
+
+    public record ImageInfo(
+            String filename,
+            String url
+    ) {
     }
 }

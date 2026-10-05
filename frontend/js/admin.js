@@ -548,7 +548,7 @@ function displayImages(
     }
 
     images.forEach(
-        filename => {
+        imageInfo => {
 
             const card =
                 document.createElement(
@@ -563,8 +563,7 @@ function displayImages(
                     "img"
                 );
 
-            img.src =
-                `${API_URL}/uploads/${encodeURIComponent(category)}/${encodeURIComponent(filename)}`;
+            img.src = imageInfo.url;
 
             img.alt =
                 "Uploaded event picture";
@@ -597,7 +596,7 @@ function displayImages(
                 "image-name";
 
             name.textContent =
-                filename;
+                imageInfo.filename;
 
             const deleteButton =
                 document.createElement(
@@ -616,7 +615,7 @@ function displayImages(
 
                     deleteImage(
                         category,
-                        filename
+                        imageInfo.filename
                     );
                 }
             );
