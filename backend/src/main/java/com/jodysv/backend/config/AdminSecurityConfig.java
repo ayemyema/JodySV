@@ -18,8 +18,8 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @Configuration
 public class AdminSecurityConfig {
 
-    private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWORD = "MOnIyBkkW_b7b6EnF8LA_huSRkgYzVe7";
+    private static final String ADMIN_USERNAME = "jodyvergara";
+    private static final String ADMIN_PASSWORD = "ayem1268";
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
