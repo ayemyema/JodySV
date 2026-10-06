@@ -23,3 +23,13 @@ returns public object URLs to the admin and event gallery pages.
 Previously uploaded files in the backend's local `uploads/` directory are not
 copied automatically. If any are still available, migrate them to the matching
 category folders in the bucket before removing the old backend files.
+
+## Admin login
+
+The default credentials are `admin` / `MOnIyBkkW_b7b6EnF8LA_huSRkgYzVe7`.
+The admin page checks them before showing its controls, and the backend also
+requires them for uploads and deletes. These credentials are hardcoded in
+`AdminSecurityConfig.java`, so anyone with access to the source can read them.
+Change the constants there before publishing the source if that matters to you.
+Serve the frontend and backend over HTTPS so credentials are protected in
+transit.

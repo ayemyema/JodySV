@@ -135,6 +135,18 @@ body {
     transform: translateY(-1px);
 }
 
+.navlink button {
+    padding: 10px 16px;
+
+    background: rgba(255, 255, 255, 0.16);
+
+    box-shadow: none;
+}
+
+.navlink button:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
 
 /* ========================================
    MAIN CONTAINER
@@ -256,6 +268,43 @@ body {
     font-size: 1.6rem;
 
     margin-bottom: 28px;
+}
+
+.login-card {
+    max-width: 520px;
+    margin: 35px auto;
+}
+
+.login-description {
+    margin: -12px 0 24px;
+    color: var(--text-light);
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-dark);
+    font-size: 15px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--sky-blue-dark);
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+}
+
+#loginMessage {
+    margin-top: 18px;
+    color: #a52a2a;
+}
+
+#loginMessage:empty {
+    display: none;
 }
 
 

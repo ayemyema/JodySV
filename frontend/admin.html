@@ -18,6 +18,7 @@
 
         <div class="navlink">
             <a href="index.html">Website</a>
+            <button id="logoutButton" type="button" hidden>Log out</button>
         </div>
     </nav>
 
@@ -27,9 +28,26 @@
         <h2>Jody SV Admin</h2>
         <p class="subtitle">Upload and manage event pictures</p>
 
+        <section id="loginPanel" class="upload-card login-card">
+            <h3>Admin login</h3>
+            <p class="login-description">Sign in to manage uploaded pictures.</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required>
+                </div>
+                <button id="loginButton" type="submit">Log in</button>
+            </form>
+            <div id="loginMessage" role="alert" aria-live="polite"></div>
+        </section>
 
-        <!-- Upload Section -->
-        <section class="upload-card">
+        <div id="adminContent" hidden>
+            <!-- Upload Section -->
+            <section class="upload-card">
 
             <h3>Upload Picture</h3>
 
@@ -90,11 +108,11 @@
             <!-- Status Message -->
             <div id="message"></div>
 
-        </section>
+            </section>
 
 
         <!-- Gallery Section -->
-        <section class="gallery-section">
+            <section class="gallery-section">
 
             <div class="gallery-header">
 
@@ -120,7 +138,8 @@
 
             </div>
 
-        </section>
+            </section>
+        </div>
 
     </main>
 

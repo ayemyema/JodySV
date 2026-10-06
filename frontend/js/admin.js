@@ -4,6 +4,15 @@ const API_URL = "https://jodysv.onrender.com";
 // ELEMENTS
 // =========================
 
+const loginPanel = document.getElementById("loginPanel");
+const loginForm = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const loginButton = document.getElementById("loginButton");
+const loginMessage = document.getElementById("loginMessage");
+const adminContent = document.getElementById("adminContent");
+const logoutButton = document.getElementById("logoutButton");
+
 const uploadForm = document.getElementById("uploadForm");
 const imageInput = document.getElementById("image");
 const categoryInput = document.getElementById("category");
@@ -32,6 +41,67 @@ const TARGET_SIZE = 1.5 * 1024 * 1024;
 const MAX_WIDTH = 2400;
 const MAX_HEIGHT = 2400;
 
+let adminAuthorization = "";
+
+function encodeBasicCredentials(username, password) {
+    const bytes = new TextEncoder().encode(`${username}:${password}`);
+    let binary = "";
+    bytes.forEach(byte => {
+        binary += String.fromCharCode(byte);
+    });
+    return btoa(binary);
+}
+
+loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    loginButton.disabled = true;
+    loginMessage.textContent = "";
+
+    const credentials = encodeBasicCredentials(usernameInput.value, passwordInput.value);
+
+    try {
+        const response = await fetch(`${API_URL}/api/admin/session`, {
+            headers: {
+                Authorization: `Basic ${credentials}`
+            },
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            loginMessage.textContent = response.status === 401 || response.status === 403
+                ? "The username or password is incorrect."
+                : "Could not sign in. Please try again.";
+            return;
+        }
+
+        adminAuthorization = `Basic ${credentials}`;
+        passwordInput.value = "";
+        loginPanel.hidden = true;
+        adminContent.hidden = false;
+        logoutButton.hidden = false;
+        loadImages();
+    } catch (error) {
+        console.error("LOGIN ERROR:", error);
+        loginMessage.textContent = "Could not connect to the admin service.";
+    } finally {
+        loginButton.disabled = false;
+    }
+});
+
+logoutButton.addEventListener("click", () => {
+    adminAuthorization = "";
+    adminContent.hidden = true;
+    loginPanel.hidden = false;
+    logoutButton.hidden = true;
+    loginForm.reset();
+    loginMessage.textContent = "";
+});
+
+function adminRequestHeaders() {
+    return {
+        Authorization: adminAuthorization
+    };
+}
 
 // =========================
 // IMAGE PREVIEW
@@ -358,6 +428,7 @@ uploadForm.addEventListener("submit", async (event) => {
                 uploadURL,
                 {
                     method: "POST",
+                    headers: adminRequestHeaders(),
                     body: formData
                 }
             );
@@ -663,7 +734,8 @@ async function deleteImage(
             await fetch(
                 url,
                 {
-                    method: "DELETE"
+                    method: "DELETE",
+                    headers: adminRequestHeaders()
                 }
             );
 
@@ -785,10 +857,3 @@ function capitalize(text) {
         text.slice(1)
     );
 }
-
-
-// =========================
-// INITIAL LOAD
-// =========================
-
-loadImages();
