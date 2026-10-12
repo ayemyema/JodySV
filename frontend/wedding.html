@@ -153,6 +153,10 @@
 
 </div>
 
+<dialog class="image-lightbox" id="imageLightbox" aria-label="Expanded wedding photo">
+    <button class="image-lightbox-close" type="button" aria-label="Close expanded photo">&times;</button>
+    <img id="lightboxImage" alt="">
+</dialog>
 
 <script>
 
@@ -172,6 +176,44 @@
             navlink.classList.toggle("active");
         }
     );
+
+    // =========================
+    // ENLARGE GALLERY PHOTOS
+    // =========================
+
+    const weddingGallery =
+        document.getElementById("weddingGallery");
+
+    const imageLightbox =
+        document.getElementById("imageLightbox");
+
+    const lightboxImage =
+        document.getElementById("lightboxImage");
+
+    const lightboxClose =
+        document.querySelector(".image-lightbox-close");
+
+    weddingGallery.addEventListener("click", event => {
+        const image = event.target.closest(".gallery-item img");
+
+        if (!image) {
+            return;
+        }
+
+        lightboxImage.src = image.currentSrc || image.src;
+        lightboxImage.alt = image.alt;
+        imageLightbox.showModal();
+    });
+
+    lightboxClose.addEventListener("click", () => {
+        imageLightbox.close();
+    });
+
+    imageLightbox.addEventListener("click", event => {
+        if (event.target === imageLightbox) {
+            imageLightbox.close();
+        }
+    });
 
 
     // =========================

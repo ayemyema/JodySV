@@ -710,3 +710,58 @@ body::before {
         height: 110px;
     }
 }
+
+.image-lightbox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+
+    max-width: 96vw;
+    max-height: 94vh;
+    padding: 0;
+
+    overflow: visible;
+
+    border: 0;
+    border-radius: 12px;
+
+    background: transparent;
+}
+
+.image-lightbox::backdrop {
+    background: rgba(0, 0, 0, 0.88);
+}
+
+.image-lightbox img {
+    display: block;
+
+    max-width: 94vw;
+    max-height: 90vh;
+
+    object-fit: contain;
+
+    border-radius: 12px;
+}
+
+.image-lightbox-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+
+    width: 40px;
+    height: 40px;
+
+    border: 0;
+    border-radius: 50%;
+
+    color: white;
+    background: rgba(0, 0, 0, 0.65);
+
+    font-size: 30px;
+    line-height: 1;
+
+    cursor: pointer;
+}
