@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Other Events | Jody SV</title>
+    <link rel="stylesheet" href="css/wedding.css">
+    <link rel="icon" href="images/logo/logopic.jpg" type="image/png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="head">
+            <h1><a href="index.html">Jody SV</a></h1>
+        </div>
+        <div class="hamburger">&#9776;</div>
+        <div class="navlink">
+            <a href="index.html">Home</a>
+            <a href="contact.html">Contact</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
+
+    <div class="bgpic">
+        <img src="images/logo/logopic.jpg" alt="Jody SV event styling">
+    </div>
+
+    <main class="gallery-section">
+        <h3>Other Events</h3>
+        <div class="gallery" id="otherGallery"></div>
+    </main>
+
+    <dialog class="image-lightbox" id="imageLightbox" aria-label="Expanded event photo">
+        <button class="image-lightbox-close" type="button" aria-label="Close expanded photo">&times;</button>
+        <img id="lightboxImage" alt="">
+    </dialog>
+
+    <script src="js/gallery.js"></script>
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const navlink = document.querySelector(".navlink");
+        const gallery = document.getElementById("otherGallery");
+        const imageLightbox = document.getElementById("imageLightbox");
+        const lightboxImage = document.getElementById("lightboxImage");
+        const lightboxClose = document.querySelector(".image-lightbox-close");
+
+        hamburger.addEventListener("click", () => {
+            navlink.classList.toggle("active");
+        });
+
+        gallery.addEventListener("click", event => {
+            const image = event.target.closest(".gallery-item img");
+
+            if (!image) {
+                return;
+            }
+
+            lightboxImage.src = image.currentSrc || image.src;
+            lightboxImage.alt = image.alt;
+            imageLightbox.showModal();
+        });
+
+        lightboxClose.addEventListener("click", () => {
+            imageLightbox.close();
+        });
+
+        imageLightbox.addEventListener("click", event => {
+            if (event.target === imageLightbox) {
+                imageLightbox.close();
+            }
+        });
+
+        loadUploadedPictures("other", "otherGallery", "Other event");
+    </script>
+</body>
+</html>

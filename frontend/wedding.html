@@ -158,6 +158,8 @@
     <img id="lightboxImage" alt="">
 </dialog>
 
+<script src="js/gallery.js"></script>
+
 <script>
 
     // =========================
@@ -216,124 +218,11 @@
     });
 
 
-    // =========================
-    // RENDER BACKEND
-    // =========================
-
-    const API_URL =
-        "https://jodysv1.onrender.com";
-
-
-    // =========================
-    // LOAD NEW WEDDING PHOTOS
-    // =========================
-
-    async function loadUploadedWeddingPictures() {
-
-        const gallery =
-            document.getElementById(
-                "weddingGallery"
-            );
-
-        try {
-
-            const response =
-                await fetch(
-                    `${API_URL}/api/images?category=wedding`
-                );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Server returned ${response.status}`
-                );
-            }
-
-            const data =
-                await response.json();
-
-            console.log(
-                "Uploaded wedding pictures:",
-                data.images
-            );
-
-
-            if (
-                !data.images ||
-                data.images.length === 0
-            ) {
-                return;
-            }
-
-
-            // Add each uploaded picture
-            data.images.forEach(
-                imageInfo => {
-
-                    const item =
-                        document.createElement(
-                            "div"
-                        );
-
-                    item.className =
-                        "gallery-item";
-
-
-                    const image =
-                        document.createElement(
-                            "img"
-                        );
-
-
-                    image.src =
-                        imageInfo.url;
-
-
-                    image.alt =
-                        "New Wedding Event";
-
-
-                    image.loading =
-                        "lazy";
-
-
-                    image.onerror =
-                        () => {
-
-                            console.error(
-                                "Could not load image:",
-                                image.src
-                            );
-
-                            item.remove();
-
-                        };
-
-
-                    item.appendChild(
-                        image
-                    );
-
-                    gallery.appendChild(
-                        item
-                    );
-
-                }
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Could not load uploaded wedding pictures:",
-                error
-            );
-
-        }
-
-    }
-
-
-    // Load new pictures
-    loadUploadedWeddingPictures();
+    loadUploadedPictures(
+        "wedding",
+        "weddingGallery",
+        "New Wedding Event"
+    );
 
 </script>
 
