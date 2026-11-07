@@ -1,5 +1,14 @@
 const API_URL = "https://jodysv1.onrender.com";
-const IMAGE_REQUEST_RETRY_DELAYS = [2000, 5000, 10000, 20000];
+const IMAGE_REQUEST_TIMEOUT_MS = 15000;
+const IMAGE_REQUEST_RETRY_DELAYS = [
+    2000,
+    5000,
+    10000,
+    20000,
+    20000,
+    20000,
+    20000
+];
 
 async function loadUploadedPictures(category, galleryId, altText) {
     const gallery = document.getElementById(galleryId);
@@ -46,7 +55,20 @@ async function fetchUploadedPictures(category) {
         let response;
 
         try {
-            response = await fetch(url, { cache: "no-store" });
+            const controller = new AbortController();
+            const timeout = setTimeout(
+                () => controller.abort(),
+                IMAGE_REQUEST_TIMEOUT_MS
+            );
+
+            try {
+                response = await fetch(url, {
+                    cache: "no-store",
+                    signal: controller.signal
+                });
+            } finally {
+                clearTimeout(timeout);
+            }
         } catch (error) {
             if (attempt === IMAGE_REQUEST_RETRY_DELAYS.length) {
                 throw error;

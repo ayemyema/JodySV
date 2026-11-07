@@ -8,6 +8,7 @@ const loginPanel = document.getElementById("loginPanel");
 const loginForm = document.getElementById("loginForm");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
+const togglePasswordButton = document.getElementById("togglePassword");
 const loginButton = document.getElementById("loginButton");
 const loginMessage = document.getElementById("loginMessage");
 const adminContent = document.getElementById("adminContent");
@@ -43,6 +44,18 @@ const MAX_HEIGHT = 2400;
 
 let adminAuthorization = "";
 
+fetch(`${API_URL}/api/health`, { cache: "no-store" })
+    .catch(error => {
+        console.warn("Could not warm up the admin service:", error);
+    });
+
+togglePasswordButton.addEventListener("click", () => {
+    const showPassword = passwordInput.type === "password";
+    passwordInput.type = showPassword ? "text" : "password";
+    togglePasswordButton.textContent = showPassword ? "Hide" : "Show";
+    togglePasswordButton.setAttribute("aria-pressed", String(showPassword));
+});
+
 function encodeBasicCredentials(username, password) {
     const bytes = new TextEncoder().encode(`${username}:${password}`);
     let binary = "";
@@ -55,6 +68,7 @@ function encodeBasicCredentials(username, password) {
 loginForm.addEventListener("submit", async event => {
     event.preventDefault();
     loginButton.disabled = true;
+    loginButton.textContent = "Connecting...";
     loginMessage.textContent = "";
 
     const credentials = encodeBasicCredentials(usernameInput.value, passwordInput.value);
@@ -82,9 +96,10 @@ loginForm.addEventListener("submit", async event => {
         loadImages();
     } catch (error) {
         console.error("LOGIN ERROR:", error);
-        loginMessage.textContent = "Could not connect to the admin service.";
+        loginMessage.textContent = "Could not connect to the admin service. If it is starting after being idle, wait a moment and try again.";
     } finally {
         loginButton.disabled = false;
+        loginButton.textContent = "Log in";
     }
 });
 

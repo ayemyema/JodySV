@@ -20,6 +20,11 @@ Netlify frontend or source control. No Supabase configuration is needed in
 Netlify. The backend uses the key to upload, list, and delete objects, and
 returns public object URLs to the admin and event gallery pages.
 
+The admin page sends a lightweight health request as soon as it opens to start
+the backend before login. This can reduce the wait after inactivity, but it
+cannot prevent cold starts on a hosting plan that sleeps; use an always-on
+backend instance for consistently fast access.
+
 Previously uploaded files in the backend's local `uploads/` directory are not
 copied automatically. If any are still available, migrate them to the matching
 category folders in the bucket before removing the old backend files.

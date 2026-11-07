@@ -1,5 +1,9 @@
 com/jodysv/backend/service/ImageService.class
+com/jodysv/backend/controller/AdminController.class
+com/jodysv/backend/controller/HealthController.class
+com/jodysv/backend/JodySvApplication.class
+com/jodysv/backend/config/AdminSecurityConfig.class
+com/jodysv/backend/service/ImageService$ImageInfo.class
 com/jodysv/backend/config/WebConfig.class
 com/jodysv/backend/config/StaticResourceConfig.class
-com/jodysv/backend/JodySvApplication.class
 com/jodysv/backend/controller/ImageController.class
