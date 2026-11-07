@@ -32,16 +32,17 @@ async function loadUploadedPictures(category, galleryId, altText) {
             item.className = "gallery-item";
 
             const image = document.createElement("img");
-            image.src = imageInfo.url;
             image.alt = altText;
             image.loading = "lazy";
-            image.onerror = () => {
-                console.error("Could not load image:", image.src);
-                item.remove();
-            };
-
             item.appendChild(image);
             gallery.appendChild(item);
+            loadImageWithRetry(image, imageInfo.url, () => {
+                console.error("Could not load image after retries:", imageInfo.url);
+                image.style.display = "none";
+                const message = document.createElement("p");
+                message.textContent = "This picture is temporarily unavailable. Please refresh to try again.";
+                item.appendChild(message);
+            });
         });
     } catch (error) {
         console.error(`Could not load uploaded ${category} pictures:`, error);

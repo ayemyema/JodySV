@@ -624,21 +624,17 @@ function displayImages(
                     "img"
                 );
 
-            img.src = imageInfo.url;
-
             img.alt =
                 "Uploaded event picture";
 
-            img.onerror = () => {
-
-                console.error(
-                    "Could not load image:",
-                    img.src
-                );
-
-                img.alt =
-                    "Image could not be loaded";
-            };
+            loadImageWithRetry(img, imageInfo.url, () => {
+                console.error("Could not load image after retries:", imageInfo.url);
+                img.alt = "Image is temporarily unavailable";
+                img.style.display = "none";
+                const unavailableMessage = document.createElement("p");
+                unavailableMessage.textContent = "Image temporarily unavailable.";
+                card.appendChild(unavailableMessage);
+            });
 
             const info =
                 document.createElement(

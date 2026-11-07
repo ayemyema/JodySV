@@ -23,11 +23,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Service
 public class ImageService {
 
     private static final int PAGE_SIZE = 100;
+    private static final int STORAGE_MAX_ATTEMPTS = 3;
+    private static final long[] STORAGE_RETRY_DELAYS_MS = {500, 1500};
 
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
             "image/jpeg",
@@ -123,8 +126,9 @@ public class ImageService {
                 + extension.toLowerCase();
 
         ensureConfigured();
+        byte[] imageBytes = file.getBytes();
 
-        try {
+        executeStorageRequest(() -> {
             restClient.post()
                     .uri(objectUri(safeCategory, newFilename))
                     .header("apikey", serviceRoleKey)
@@ -132,13 +136,13 @@ public class ImageService {
                             HttpHeaders.AUTHORIZATION,
                             "Bearer " + serviceRoleKey
                     )
+                    .header("x-upsert", "true")
                     .contentType(MediaType.parseMediaType(contentType))
-                    .body(file.getBytes())
+                    .body(imageBytes)
                     .retrieve()
                     .toBodilessEntity();
-        } catch (RestClientException e) {
-            throw storageException(e);
-        }
+            return null;
+        });
 
         return newFilename;
     }
@@ -198,7 +202,7 @@ public class ImageService {
                 ))
         );
 
-        try {
+        executeStorageRequest(() -> {
             restClient.method(org.springframework.http.HttpMethod.DELETE)
                     .uri(bucketUri())
                     .header("apikey", serviceRoleKey)
@@ -210,9 +214,8 @@ public class ImageService {
                     .body(requestBody)
                     .retrieve()
                     .toBodilessEntity();
-        } catch (RestClientException e) {
-            throw storageException(e);
-        }
+            return null;
+        });
     }
 
     public String getImageUrl(
@@ -253,8 +256,8 @@ public class ImageService {
                 )
         );
 
-        try {
-            byte[] responseBody = restClient.post()
+        byte[] responseBody = executeStorageRequest(() ->
+                restClient.post()
                     .uri(listUri())
                     .header("apikey", serviceRoleKey)
                     .header(
@@ -264,34 +267,64 @@ public class ImageService {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(requestBody)
                     .retrieve()
-                    .body(byte[].class);
+                    .body(byte[].class));
 
-            JsonNode response = objectMapper.readTree(responseBody);
+        JsonNode response = objectMapper.readTree(responseBody);
 
-            if (response == null || !response.isArray()) {
-                throw new IOException(
-                        "Supabase Storage returned an invalid image list."
-                );
+        if (response == null || !response.isArray()) {
+            throw new IOException(
+                    "Supabase Storage returned an invalid image list."
+            );
+        }
+
+        List<String> filenames = new ArrayList<>();
+
+        for (JsonNode item : response) {
+            JsonNode name = item.get("name");
+            JsonNode id = item.get("id");
+
+            if (name != null &&
+                    name.isTextual() &&
+                    id != null &&
+                    !id.isNull()) {
+                filenames.add(name.asText());
             }
+        }
 
-            List<String> filenames = new ArrayList<>();
+        return filenames;
+    }
 
-            for (JsonNode item : response) {
-                JsonNode name = item.get("name");
-                JsonNode id = item.get("id");
+    private <T> T executeStorageRequest(Supplier<T> request) throws IOException {
+        for (int attempt = 1; attempt <= STORAGE_MAX_ATTEMPTS; attempt++) {
+            try {
+                return request.get();
+            } catch (RestClientException exception) {
+                if (!isRetryable(exception) || attempt == STORAGE_MAX_ATTEMPTS) {
+                    throw storageException(exception);
+                }
 
-                if (name != null &&
-                        name.isTextual() &&
-                        id != null &&
-                        !id.isNull()) {
-                    filenames.add(name.asText());
+                try {
+                    Thread.sleep(STORAGE_RETRY_DELAYS_MS[attempt - 1]);
+                } catch (InterruptedException interruptedException) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(
+                            "Interrupted while retrying Supabase Storage.",
+                            interruptedException
+                    );
                 }
             }
-
-            return filenames;
-        } catch (RestClientException e) {
-            throw storageException(e);
         }
+
+        throw new IOException("Could not complete the Supabase Storage request.");
+    }
+
+    private boolean isRetryable(RestClientException exception) {
+        if (!(exception instanceof RestClientResponseException response)) {
+            return true;
+        }
+
+        int status = response.getStatusCode().value();
+        return status == 408 || status == 429 || status >= 500;
     }
 
     private URI objectUri(

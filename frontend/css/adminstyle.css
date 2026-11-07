@@ -865,4 +865,25 @@ button:disabled {
 
         padding: 12px 18px;
     }
+
+    .password-input {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .password-input input {
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+        padding: 12px 10px;
+        font-size: 16px;
+    }
+
+    .password-input .password-toggle {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 64px;
+        padding: 12px 12px;
+        white-space: nowrap;
+    }
 }

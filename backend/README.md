@@ -20,6 +20,14 @@ Netlify frontend or source control. No Supabase configuration is needed in
 Netlify. The backend uses the key to upload, list, and delete objects, and
 returns public object URLs to the admin and event gallery pages.
 
+Uploads, deletes, and image-list requests retry up to two times after temporary
+network or Supabase server errors. The admin and public pages also retry loading
+individual image files. These retries help with short interruptions only; if
+the Supabase project is paused, over quota, misconfigured, or experiencing a
+long outage, check the project status and Storage logs in the Supabase dashboard.
+The images remain hosted by Supabase, so a prolonged Storage outage can still
+make them unavailable until the service recovers.
+
 The admin page sends a lightweight health request as soon as it opens to start
 the backend before login. This can reduce the wait after inactivity, but it
 cannot prevent cold starts on a hosting plan that sleeps; use an always-on
