@@ -10,6 +10,79 @@ const IMAGE_REQUEST_RETRY_DELAYS = [
     20000
 ];
 
+function initializeGalleryLightbox(galleryId) {
+    const gallery = document.getElementById(galleryId);
+    const lightbox = document.getElementById("imageLightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const closeButton = lightbox.querySelector(".image-lightbox-close");
+    const previousButton = lightbox.querySelector(".image-lightbox-previous");
+    const nextButton = lightbox.querySelector(".image-lightbox-next");
+    let activeIndex = -1;
+
+    if (!gallery || !lightbox || !lightboxImage ||
+            !closeButton || !previousButton || !nextButton) {
+        throw new Error("Could not initialize the event photo lightbox.");
+    }
+
+    const getImages = () => Array.from(
+        gallery.querySelectorAll(".gallery-item img")
+    ).filter(image => image.style.display !== "none");
+
+    const showImage = index => {
+        const images = getImages();
+
+        if (images.length === 0) {
+            return;
+        }
+
+        activeIndex = (index + images.length) % images.length;
+        const image = images[activeIndex];
+        lightboxImage.src = image.currentSrc || image.src;
+        lightboxImage.alt = image.alt;
+        previousButton.hidden = images.length < 2;
+        nextButton.hidden = images.length < 2;
+    };
+
+    gallery.addEventListener("click", event => {
+        const image = event.target.closest(".gallery-item img");
+
+        if (!image) {
+            return;
+        }
+
+        showImage(getImages().indexOf(image));
+        lightbox.showModal();
+    });
+
+    previousButton.addEventListener("click", () => {
+        showImage(activeIndex - 1);
+    });
+
+    nextButton.addEventListener("click", () => {
+        showImage(activeIndex + 1);
+    });
+
+    closeButton.addEventListener("click", () => {
+        lightbox.close();
+    });
+
+    lightbox.addEventListener("click", event => {
+        if (event.target === lightbox) {
+            lightbox.close();
+        }
+    });
+
+    lightbox.addEventListener("keydown", event => {
+        if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            showImage(activeIndex - 1);
+        } else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            showImage(activeIndex + 1);
+        }
+    });
+}
+
 async function loadUploadedPictures(category, galleryId, altText) {
     const gallery = document.getElementById(galleryId);
 

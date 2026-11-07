@@ -745,6 +745,42 @@ body::before {
     border-radius: 12px;
 }
 
+.image-lightbox-previous,
+.image-lightbox-next {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    transform: translateY(-50%);
+
+    width: 44px;
+    height: 56px;
+
+    border: 0;
+    border-radius: 8px;
+
+    color: white;
+    background: rgba(0, 0, 0, 0.65);
+
+    font-size: 42px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.image-lightbox-previous {
+    left: 12px;
+}
+
+.image-lightbox-next {
+    right: 12px;
+}
+
+.image-lightbox-previous:hover,
+.image-lightbox-next:hover,
+.image-lightbox-close:hover {
+    background: rgba(0, 0, 0, 0.85);
+}
+
 .image-lightbox-close {
     position: absolute;
     top: 10px;
