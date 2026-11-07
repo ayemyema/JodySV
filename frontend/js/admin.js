@@ -19,7 +19,7 @@ const imageInput = document.getElementById("image");
 const categoryInput = document.getElementById("category");
 
 const previewContainer = document.getElementById("previewContainer");
-const preview = document.getElementById("preview");
+const previewList = document.getElementById("previewList");
 
 const uploadButton = document.getElementById("uploadButton");
 const message = document.getElementById("message");
@@ -34,6 +34,7 @@ const refreshButton = document.getElementById("refreshButton");
 // =========================
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_UPLOAD_COUNT = 5;
 
 // Target upload size.
 // Keeping this below 2 MB gives the Codespaces proxy plenty of room.
@@ -123,54 +124,75 @@ function adminRequestHeaders() {
 // =========================
 
 imageInput.addEventListener("change", () => {
-
-    const file = imageInput.files[0];
-
-    if (!file) {
-        previewContainer.style.display = "none";
-        return;
-    }
-
+    const files = Array.from(imageInput.files);
     const allowedTypes = [
         "image/jpeg",
         "image/png",
         "image/webp"
     ];
 
-    if (!allowedTypes.includes(file.type)) {
-
-        showMessage(
-            "Please select a JPG, PNG, or WEBP image.",
-            "error"
-        );
-
+    if (files.length > MAX_UPLOAD_COUNT) {
         imageInput.value = "";
-        previewContainer.style.display = "none";
-
+        renderImagePreviews([]);
+        showMessage(`Please select no more than ${MAX_UPLOAD_COUNT} pictures at a time.`, "error");
         return;
     }
 
-    if (file.size > MAX_FILE_SIZE) {
-
-        showMessage(
-            "The image is too large. Maximum size is 10 MB.",
-            "error"
-        );
-
+    const invalidType = files.find(file => !allowedTypes.includes(file.type));
+    if (invalidType) {
         imageInput.value = "";
-        previewContainer.style.display = "none";
-
+        renderImagePreviews([]);
+        showMessage("Please select only JPG, PNG, or WEBP images.", "error");
         return;
     }
 
-    const imageURL = URL.createObjectURL(file);
+    const oversizedFile = files.find(file => file.size > MAX_FILE_SIZE);
+    if (oversizedFile) {
+        imageInput.value = "";
+        renderImagePreviews([]);
+        showMessage("Each image must be no larger than 10 MB.", "error");
+        return;
+    }
 
-    preview.src = imageURL;
-
-    previewContainer.style.display = "block";
-
+    renderImagePreviews(files);
     clearMessage();
 });
+
+function renderImagePreviews(files) {
+    previewList.querySelectorAll("img").forEach(image => {
+        URL.revokeObjectURL(image.src);
+    });
+    previewList.replaceChildren();
+
+    if (files.length === 0) {
+        previewContainer.style.display = "none";
+        return;
+    }
+
+    files.forEach(file => {
+        const item = document.createElement("div");
+        item.className = "preview-item";
+
+        const image = document.createElement("img");
+        image.src = URL.createObjectURL(file);
+        image.alt = file.name;
+
+        const name = document.createElement("span");
+        name.textContent = file.name;
+
+        item.append(image, name);
+        previewList.appendChild(item);
+    });
+
+    previewContainer.style.display = "block";
+}
+
+function updateSelectedFiles(remainingFiles) {
+    const fileTransfer = new DataTransfer();
+    remainingFiles.forEach(file => fileTransfer.items.add(file));
+    imageInput.files = fileTransfer.files;
+    renderImagePreviews(remainingFiles);
+}
 
 
 // =========================
@@ -373,19 +395,24 @@ uploadForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    const originalFile =
-        imageInput.files[0];
+    const originalFiles =
+        Array.from(imageInput.files);
 
     const category =
         categoryInput.value;
 
-    if (!originalFile) {
+    if (originalFiles.length === 0) {
 
         showMessage(
-            "Please choose an image.",
+            "Please choose at least one picture.",
             "error"
         );
 
+        return;
+    }
+
+    if (originalFiles.length > MAX_UPLOAD_COUNT) {
+        showMessage(`Please choose no more than ${MAX_UPLOAD_COUNT} pictures.`, "error");
         return;
     }
 
@@ -401,120 +428,68 @@ uploadForm.addEventListener("submit", async (event) => {
 
     uploadButton.disabled = true;
 
-    uploadButton.textContent =
-        "Preparing image...";
-
     clearMessage();
 
+    let uploadedCount = 0;
     try {
-
-        // Compress before sending.
-        const file =
-            await compressImage(
-                originalFile
-            );
-
-        console.log(
-            "Final upload size:",
-            formatFileSize(file.size)
-        );
-
-        const formData =
-            new FormData();
-
-        formData.append(
-            "image",
-            file
-        );
-
-        uploadButton.textContent =
-            "Uploading...";
-
         const uploadURL =
             `${API_URL}/api/images/upload?category=${encodeURIComponent(category)}`;
 
-        console.log(
-            "Uploading to:",
-            uploadURL
-        );
+        for (const originalFile of originalFiles) {
+            uploadButton.textContent = uploadedCount === 0
+                ? `Preparing 1 of ${originalFiles.length}...`
+                : `Preparing ${uploadedCount + 1} of ${originalFiles.length}...`;
 
-        const response =
-            await fetch(
-                uploadURL,
-                {
-                    method: "POST",
-                    headers: adminRequestHeaders(),
-                    body: formData
-                }
-            );
+            const file = await compressImage(originalFile);
+            const formData = new FormData();
+            formData.append("image", file);
 
-        const responseText =
-            await response.text();
+            uploadButton.textContent = `Uploading ${uploadedCount + 1} of ${originalFiles.length}...`;
+            const response = await fetch(uploadURL, {
+                method: "POST",
+                headers: adminRequestHeaders(),
+                body: formData
+            });
+            const responseText = await response.text();
 
-        console.log(
-            "Server response:",
-            responseText
-        );
+            let result = {};
+            try {
+                result = JSON.parse(responseText);
+            } catch {
+                result = { message: responseText };
+            }
 
-        let result = {};
+            if (!response.ok) {
+                throw new Error(
+                    result.message ||
+                    `Upload failed for ${originalFile.name}. Server returned ${response.status}.`
+                );
+            }
 
-        try {
-
-            result =
-                JSON.parse(responseText);
-
-        } catch {
-
-            result = {
-                message: responseText
-            };
+            uploadedCount += 1;
+            updateSelectedFiles(originalFiles.slice(uploadedCount));
         }
-
-        if (!response.ok) {
-
-            throw new Error(
-                result.message ||
-                `Upload failed. Server returned ${response.status}.`
-            );
-        }
-
-        showMessage(
-            "Picture uploaded successfully!",
-            "success"
-        );
-
-        console.log(
-            "Uploaded filename:",
-            result.filename
-        );
 
         uploadForm.reset();
-
-        previewContainer.style.display =
-            "none";
-
+        renderImagePreviews([]);
+        showMessage(`Successfully uploaded ${uploadedCount} pictures.`, "success");
         loadImages();
-
     } catch (error) {
-
-        console.error(
-            "UPLOAD ERROR:",
-            error
-        );
-
-        showMessage(
-            error.message ||
-            "Failed to upload the picture.",
-            "error"
-        );
+        console.error("UPLOAD ERROR:", error);
+        const messageText = uploadedCount > 0
+            ? `Uploaded ${uploadedCount} picture(s). The remaining upload failed: ${error.message}`
+            : error.message || "Failed to upload the pictures.";
+        showMessage(messageText, "error");
+        if (uploadedCount > 0) {
+            loadImages();
+        }
 
     } finally {
 
         uploadButton.disabled =
             false;
 
-        uploadButton.textContent =
-            "Upload Picture";
+        uploadButton.textContent = "Upload Pictures";
     }
 });
 

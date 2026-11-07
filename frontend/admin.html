@@ -70,14 +70,13 @@
 
                 <div class="form-group">
 
-                    <label for="image">
-                        Choose Picture
-                    </label>
+                    <label for="image">Choose Pictures (up to 5)</label>
 
                     <input
                         type="file"
                         id="image"
                         accept="image/jpeg,image/png,image/webp"
+                        multiple
                         required
                     >
 
@@ -86,15 +85,8 @@
 
                 <!-- Image Preview -->
                 <div id="previewContainer" class="preview-container">
-
-                    <p>Image Preview</p>
-
-                    <img
-                        id="preview"
-                        src=""
-                        alt="Image Preview"
-                    >
-
+                    <p>Image Previews</p>
+                    <div id="previewList" class="preview-list"></div>
                 </div>
 
 
@@ -102,7 +94,7 @@
                     type="submit"
                     id="uploadButton"
                 >
-                    Upload Picture
+                    Upload Pictures
                 </button>
 
             </form>
